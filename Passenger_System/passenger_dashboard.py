@@ -67,7 +67,7 @@ class Travel:
         ## -------------------------------Menu----------------------------------
         # Menu Frame
         menu_frame = Frame(self.body_frame, bg="blue")
-        menu_frame.place(x=0, y=0, width=200, height=233)
+        menu_frame.place(x=0, y=0, width=200, height=183)
 
         # Menu Frame and Label      
         menu_top_frame = Frame(menu_frame, bg="lightblue", bd = 5, relief=RIDGE)
@@ -78,17 +78,14 @@ class Travel:
 
         #Button Frame
         menu_button_frame = Frame(menu_frame, bg="white", bd = 5, relief=RIDGE, highlightbackground="gray17")
-        menu_button_frame.place(x=0, y=70, width=200, height=163)
+        menu_button_frame.place(x=0, y=70, width=200, height=113)
 
         # Menu Buttons
         dashboard_button = Button(menu_button_frame, text="Dashboard", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
         dashboard_button.place(x=0, y=1, width=190, height=50)
 
-        add_button = Button(menu_button_frame, text="Add Details", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
-        add_button.place(x=0, y=52, width=190, height=50)
-
         logout_button = Button(menu_button_frame, text="Logout", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
-        logout_button.place(x=0, y=103, width=190, height=50)
+        logout_button.place(x=0, y=52, width=190, height=50)
 
         self.dashboard()
 
@@ -245,8 +242,8 @@ class Travel:
                 self.details_table_dashboard.item(row, tags=("evenrow",))
             else:
                 self.details_table_dashboard.item(row, tags=("oddrow",))
+   
 
-    
     
 def main(): 
     window = Tk()
