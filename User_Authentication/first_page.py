@@ -1,9 +1,7 @@
 from tkinter import *
 import customtkinter as ctk
 from PIL import ImageTk, Image
-
-
-
+from passenger_login import Passenger_Login 
 
 class FirstPage:
     def __init__(self, first_window):
@@ -31,6 +29,7 @@ class FirstPage:
         self.signup_btn.destroy()
         if hasattr(self, "sign_frame") and self.sign_frame.winfo_exists():
             self.sign_frame.destroy()
+
         # Frame
         self.login_frame = ctk.CTkFrame(self.first_window, fg_color='#5B5858', width=500, height=400, bg_color='transparent')
         self.login_frame.place(x=500, y=200)
@@ -43,7 +42,7 @@ class FirstPage:
 
 
         # admin and passenger Button
-        self.login_passenger_btn = ctk.CTkButton(self.login_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200)
+        self.login_passenger_btn = ctk.CTkButton(self.login_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200,command=self.passenger_login_func)
         self.login_passenger_btn.place(x=160, y=130)
 
         self.login_admin_btn = ctk.CTkButton(self.login_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70)
@@ -53,13 +52,14 @@ class FirstPage:
         ctk.CTkLabel(self.login_frame, text='Do not have an account?', bg_color='#5B5858', fg_color='#5B5858', text_color='white').place(x=185, y=310)
         ctk.CTkButton(self.login_frame, text='Create Account', bg_color='#5B5858', fg_color='white',text_color='black',command=self.sign).place(x=190, y=350)
 
-        ctk.CTkButton(self.login_frame, text='←', width=20, fg_color='#5B5858', bg_color='#5B5858',command=self.click1).place(x=10, y=10)
+        ctk.CTkButton(self.login_frame, text='←', width=20, fg_color='#5B5858', bg_color='#5B5858',command=self.go_back_from_login_frame).place(x=10, y=10)
 
     def sign(self):
         self.signup_btn.destroy()
         self.login_btn.destroy()
         if hasattr(self, "login_frame") and self.login_frame.winfo_exists():
             self.login_frame.destroy()
+
         # Frame
         self.sign_frame = ctk.CTkFrame(self.first_window, fg_color='#5B5858', width=500, height=400, bg_color='transparent')
         self.sign_frame.place(x=500, y=200)
@@ -71,17 +71,17 @@ class FirstPage:
         ctk.CTkLabel(self.sign_frame, text='want to sign in to?', bg_color='#5B5858', fg_color='#5B5858', height=10,text_color='white').place(x=210, y=95)
         
         # passenger and admin button
-        self.sign_passenger = ctk.CTkButton(self.sign_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200, command=self.click1)
+        self.sign_passenger = ctk.CTkButton(self.sign_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200)
         self.sign_passenger.place(x=160, y=130)
         self.sign_admin_btn= ctk.CTkButton(self.sign_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70)
         self.sign_admin_btn.place(x=160, y=210)
 
         ctk.CTkLabel(self.sign_frame, text='Already have an account?', bg_color='#5B5858', fg_color='#5B5858',text_color='white').place(x=185, y=310)
         ctk.CTkButton(self.sign_frame, text='Login', bg_color='#5B5858', fg_color='white',text_color='black', command=self.login).place(x=190, y=350)
-        ctk.CTkButton(self.sign_frame, text='←', width=20, fg_color='#5B5858', bg_color='#5B5858',command=self.click2).place(x=10, y=10)
+        ctk.CTkButton(self.sign_frame, text='←', width=20, fg_color='#5B5858', bg_color='#5B5858',command=self.go_back_from_signin_frame).place(x=10, y=10)
 
 
-    def click1(self):
+    def go_back_from_login_frame(self):
         self.login_frame.destroy()
         self.login_btn = ctk.CTkButton(self.first_window, text='Login', fg_color='#373737', font=('Arial', 15),corner_radius=20, width=110, height=50, command=self.login)
         self.login_btn.place(x=1150, y=20)
@@ -90,7 +90,7 @@ class FirstPage:
         self.signup_btn.place(x=1300, y=20)
 
 
-    def click2(self):
+    def go_back_from_signin_frame(self):
         self.sign_frame.destroy()
         self.login_btn = ctk.CTkButton(self.first_window, text='Login', fg_color='#373737', font=('Arial', 15),corner_radius=20, width=110, height=50, command=self.login)
         self.login_btn.place(x=1150, y=20)
@@ -98,17 +98,11 @@ class FirstPage:
         self.signup_btn = ctk.CTkButton(self.first_window, text='Sign up', fg_color='#373737', font=('Arial', 15), corner_radius=20, width=110, height=50, command=self.sign)
         self.signup_btn.place(x=1300, y=20)
 
+    def passenger_login_func(self):
+        new_window = Toplevel()
+        obj = Passenger_Login(new_window)
 
-
-  
-
-       
-        
-        
-
- 
-
-
-root = Tk()
-first_window_obj = FirstPage(root)
-root.mainloop()
+if __name__ == "__main__":
+    root = Tk()
+    first_window_obj = FirstPage(root)
+    root.mainloop()
