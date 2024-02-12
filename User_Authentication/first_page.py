@@ -2,6 +2,7 @@ from tkinter import *
 import customtkinter as ctk
 from PIL import ImageTk, Image
 from passenger_login import Passenger_Login 
+from admin_login import Admin_login
 
 class FirstPage:
     def __init__(self, first_window):
@@ -45,7 +46,7 @@ class FirstPage:
         self.login_passenger_btn = ctk.CTkButton(self.login_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200,command=self.passenger_login_func)
         self.login_passenger_btn.place(x=160, y=130)
 
-        self.login_admin_btn = ctk.CTkButton(self.login_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70)
+        self.login_admin_btn = ctk.CTkButton(self.login_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70, command=self.admin_login)
         self.login_admin_btn.place(x=160, y=210)
  
         # create and arrowButton
@@ -98,9 +99,17 @@ class FirstPage:
         self.signup_btn = ctk.CTkButton(self.first_window, text='Sign up', fg_color='#373737', font=('Arial', 15), corner_radius=20, width=110, height=50, command=self.sign)
         self.signup_btn.place(x=1300, y=20)
 
+
+    def admin_login(self):
+        new=Toplevel(self.first_window)
+        obj=Admin_login(new)
+
+
+
     def passenger_login_func(self):
         new_window = Toplevel()
         obj = Passenger_Login(new_window)
+
 
 if __name__ == "__main__":
     root = Tk()
