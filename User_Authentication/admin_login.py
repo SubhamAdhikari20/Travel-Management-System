@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import customtkinter as ctk
 from tkinter import messagebox
-import mysql.connector as mysql
+from admin_code import admin_code
 
 
 class Admin_login():
@@ -69,19 +69,18 @@ class Admin_login():
         login_button.place(x=120,y=340)
 
         # creating and forgot Button
-        self.new_acc_btn=ctk.CTkButton(login_frame,text="Create new account?",text_color="white",fg_color="gray38",font=("times new roman",15,"bold")).place(x=40,y=410)
+        self.new_acc_btn=ctk.CTkButton(login_frame,text="Create new account?",text_color="white",fg_color="gray38",font=("times new roman",15,"bold"),command=self.code).place(x=40,y=410)
 
         self.forgot_pass_btn=ctk.CTkButton(login_frame,text="Forgot password?",text_color="white",fg_color="gray38",font=("times new roman",15,"bold")).place(x=40,y=440)
 
-   
+    def code(self):  
+        signin=Toplevel()
+        obj=admin_code(signin)
+        self.window_login_type.destroy()
 
+    
 
-        
-
-def main():
+if __name__ == "__main__":    
     root = Tk()
     obj = Admin_login(root)
     root.mainloop()
-
-if __name__ == "__main__":    
-    main()

@@ -3,6 +3,7 @@ import customtkinter as ctk
 from PIL import ImageTk, Image
 from passenger_login import Passenger_Login 
 from admin_login import Admin_login
+from admin_code import admin_code
 
 class FirstPage:
     def __init__(self, first_window):
@@ -74,7 +75,7 @@ class FirstPage:
         # passenger and admin button
         self.sign_passenger = ctk.CTkButton(self.sign_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200)
         self.sign_passenger.place(x=160, y=130)
-        self.sign_admin_btn= ctk.CTkButton(self.sign_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70)
+        self.sign_admin_btn= ctk.CTkButton(self.sign_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70,command=self.code_admin)
         self.sign_admin_btn.place(x=160, y=210)
 
         ctk.CTkLabel(self.sign_frame, text='Already have an account?', bg_color='#5B5858', fg_color='#5B5858',text_color='white').place(x=185, y=310)
@@ -103,6 +104,11 @@ class FirstPage:
     def admin_login(self):
         new=Toplevel(self.first_window)
         obj=Admin_login(new)
+
+    def code_admin(self):
+        new=Toplevel(self.first_window)
+        obj=admin_code(new)
+       
 
 
 
