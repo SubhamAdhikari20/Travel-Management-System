@@ -7,7 +7,6 @@ import mysql.connector
 import ctypes
 import customtkinter as ctk
 from datetime import datetime
-from admin_buy_tickets import Ticket
 
 myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
@@ -19,7 +18,7 @@ class Travel:
         self.main_window = root
         self.main_window.title("Travel Managemet System")
         self.main_window.geometry("1465x740+0+0")
-        self.main_window.iconbitmap("Travel-Management-System/System_Images/title_logo.ico")
+        self.main_window.iconbitmap("System_Images/title_logo.ico")
         self.main_window.minsize(1465, 740)
         
         ### ------------------------------Title---------------------------------
@@ -42,18 +41,15 @@ class Travel:
         time_label.place(x=7, y=7)
         show_time()
 
-        #intializaing object
-        self.ticket_obj = Ticket()
-
         # Top image
-        top_img = Image.open("Travel-Management-System/System_Images/top_img2.jpg")
+        top_img = Image.open("System_Images/top_img2.jpg")
         top_img = top_img.resize((1465, 740), Image.LANCZOS) 
         self.top_img = ImageTk.PhotoImage(top_img)
         label_top_img = Label(self.main_window, image=self.top_img)
         label_top_img.place(x=0, y=0, width=1465, height=140)
         
         # Top left image/logo
-        top_left_img = Image.open("Travel-Management-System/System_Images/logo.png")
+        top_left_img = Image.open("System_Images/logo.png")
         top_left_img = top_left_img.resize((200, 140), Image.LANCZOS) 
         self.top_left_img = ImageTk.PhotoImage(top_left_img)
         label_top_left_img = Label(self.main_window, image=self.top_left_img, relief=RIDGE)
@@ -71,7 +67,7 @@ class Travel:
         ## -------------------------------Menu----------------------------------
         # Menu Frame
         menu_frame = Frame(self.body_frame, bg="blue")
-        menu_frame.place(x=0, y=0, width=200, height=233)
+        menu_frame.place(x=0, y=0, width=200, height=183)
 
         # Menu Frame and Label      
         menu_top_frame = Frame(menu_frame, bg="lightblue", bd = 5, relief=RIDGE)
@@ -82,17 +78,14 @@ class Travel:
 
         #Button Frame
         menu_button_frame = Frame(menu_frame, bg="white", bd = 5, relief=RIDGE, highlightbackground="gray17")
-        menu_button_frame.place(x=0, y=70, width=200, height=163)
+        menu_button_frame.place(x=0, y=70, width=200, height=113)
 
         # Menu Buttons
         dashboard_button = Button(menu_button_frame, text="Dashboard", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
         dashboard_button.place(x=0, y=1, width=190, height=50)
 
-        add_button = Button(menu_button_frame, text="Add Details", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
-        add_button.place(x=0, y=52, width=190, height=50)
-
         logout_button = Button(menu_button_frame, text="Logout", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
-        logout_button.place(x=0, y=103, width=190, height=50)
+        logout_button.place(x=0, y=52, width=190, height=50)
 
         self.dashboard()
 
@@ -112,7 +105,7 @@ class Travel:
         bus_details_label.place(x=0, y=0, width=1253, height=50)
         
         # Logo
-        top_left_logo = Image.open("Travel-Management-System/System_Images/logo1.png")
+        top_left_logo = Image.open("System_Images/logo1.png")
         top_left_logo = top_left_logo.resize((50, 40), Image.LANCZOS) 
         self.top_left_logo = ImageTk.PhotoImage(top_left_logo)
         label_top_left_logo = Label(self.dashboard_frame, image=self.top_left_logo)
@@ -219,7 +212,7 @@ class Travel:
 
         self.details_table_dashboard.pack(fill=BOTH, expand=True)
 
-        ticket_button = Button(view_details_frame, text="Buy Ticket", font=("Arial", 15, "bold"),bg="red", fg="white", cursor="hand2", bd=5, highlightthickness=5, activebackground="gray12", activeforeground="gold", command=lambda:self.ticket_obj.buy_ticket(self.main_frame))
+        ticket_button = Button(view_details_frame, text="Buy Ticket", font=("Arial", 15, "bold"),bg="red", fg="white", cursor="hand2", bd=5, highlightthickness=5, activebackground="gray12", activeforeground="gold")
         ticket_button.place(x=10, y=395, width=150, height=50)
 
         self.style_func()
@@ -249,8 +242,8 @@ class Travel:
                 self.details_table_dashboard.item(row, tags=("evenrow",))
             else:
                 self.details_table_dashboard.item(row, tags=("oddrow",))
+   
 
-    
     
 def main(): 
     window = Tk()
