@@ -7,7 +7,8 @@ import mysql.connector
 import ctypes
 import customtkinter as ctk
 from datetime import datetime
-from admin_add_details import Add_details
+from admin_add_details import AddDetails
+
 myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
@@ -26,7 +27,7 @@ class Travel:
         title_label.place(x=0, y=140, width=1465, height=50)
         
         #initializing add_details_obj
-        self.add_details_obj = Add_details()
+        self.add_details_obj = AddDetails()
 
         # Show time 
         def show_time():
