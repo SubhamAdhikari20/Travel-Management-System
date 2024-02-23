@@ -96,12 +96,12 @@ class Travel:
 
 
 
-    ################################## Dashboard Section ###################################
+    ################################## Dashboard Section ####################################
 
     def dashboard(self):
         ## Bus Details
         # Title Label
-        ### ------------------------------Main Frame--------------------------------------
+        ### ------------------------------Main Frame---------------------------------------
         self.dashboard_frame = Frame(self.main_frame, bg="lightblue")      
         self.dashboard_frame.place(x=0, y=0, width=1253, height=551)                        
 
@@ -142,7 +142,7 @@ class Travel:
         search_bus_button = Button(bus_details_frame, text="Search Bus", font=("Arial", 15, "bold"), bg="green", fg="white", cursor="hand2", bd=5, highlightthickness=5, activebackground="darkgreen", activeforeground="black")
         search_bus_button.place(x=100, y=190, width=150, height=50)
 
-        ## --------- View details frame--------
+        ## --------- View details frame---------
         view_details_frame = LabelFrame(self.dashboard_frame, text="View Details", font=("Arial", 17, "bold"), bg="lightblue", fg="blue")
         view_details_frame.place(x=385, y=55, width=863, height=490)
 
@@ -179,6 +179,9 @@ class Travel:
         scroll_bar_x.config(command=self.details_table_dashboard.xview)
         scroll_bar_y.config(command=self.details_table_dashboard.yview)
 
+
+
+####
 
         self.details_table_dashboard.heading("bus_no", text="Bus No")
         self.details_table_dashboard.heading("bus_agency", text="Bus Agency")
@@ -218,7 +221,7 @@ class Travel:
 
         ticket_button = Button(view_details_frame, text="Buy Ticket", font=("Arial", 15, "bold"),bg="red", fg="white", cursor="hand2", bd=5, highlightthickness=5, activebackground="gray12", activeforeground="gold", command=lambda:self.ticket_obj.buy_ticket(self.main_frame))
         ticket_button.place(x=10, y=395, width=150, height=50)
-
+#
         self.style_func()
 
 

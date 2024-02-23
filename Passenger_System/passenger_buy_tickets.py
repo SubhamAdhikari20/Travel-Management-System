@@ -7,6 +7,8 @@ from tkcalendar import DateEntry
 import mysql.connector
 import customtkinter as ctk
 from datetime import datetime
+from passenger_ticket_info import Ticket_Info
+
 
 class Ticket:
     def __init__(self):       
@@ -219,9 +221,15 @@ class Ticket:
         self.total_price = Label(self.footer_frame, text=f"NPR. {self.total}", fg="white", bg="gray12", font=("Arial", 12, "bold"))
         self.total_price.place(x=405, y=30)
 
+        # initializating object
+        self.obj = Ticket_Info()        
 
         # book button
-        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"))
+        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"),command=self.ticket_info_func)
         book_now_button.place(x=700, y=10)
+
+    def ticket_info_func(self):
+        new_window = Toplevel(self.ticket_button_frame)
+        self.obj.ticket_info_class(new_window)
 
         
