@@ -7,10 +7,11 @@ from tkcalendar import DateEntry
 import mysql.connector
 import customtkinter as ctk
 from datetime import datetime
+from admin_ticket_info import Ticket_Info
 
 class Ticket:
     def __init__(self):       
-         ## Variables 
+         # Variables #
         self.buy_ticket_section_bus_no_var = StringVar()
         self.buy_ticket_section_total_passenger_var = StringVar()
         self.buy_ticket_section_bus_agency_var = StringVar()
@@ -23,17 +24,17 @@ class Ticket:
         self.bus_agency_name = StringVar()
         self.bus_type = StringVar()
 
-    ## Ticket Details
+    # Ticket Details #
     def buy_ticket(self, parent_frame):
-        # Ticket button frame
+        # Ticket button frame #
         self.ticket_button_frame = Frame(parent_frame, bg="lightblue")
         self.ticket_button_frame.place(x=0, y=0, width=1253, height=551)
 
-        # Title Label
+        # Title Label #
         buy_ticket_label = Label(self.ticket_button_frame, text="Buy Ticket", font=("Arial", 20, "bold"), bg="black", fg="gold", bd=5, relief=RIDGE)
         buy_ticket_label.place(x=0, y=0, width=1253, height=50)
         
-        # # Logo
+        # Logo #
         top_left_logo = Image.open("Travel-Management-System/System_Images/logo1.png")
         top_left_logo = top_left_logo.resize((50, 40), Image.LANCZOS) 
         self.top_left_logo = ImageTk.PhotoImage(top_left_logo)
@@ -52,7 +53,7 @@ class Ticket:
         passenger_name_label.place(x=5, y=10)
         self.passenger_name_entry = ttk.Entry(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_passenger_name_var)
         self.passenger_name_entry.place(x=150, y=10, width=200, height=30)
-
+###
         
 
         contact_label = Label(ticket_details_frame, text="Mobile Number:", bg="lightblue", font=("Arial", 12, "bold"))
@@ -111,7 +112,7 @@ class Ticket:
         reporting_time_entry = ttk.Entry(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_reporting_time_var)
         reporting_time_entry.place(x=150, y=410, width=200, height=30)
 
-        ## -------------------Bus Seats Booking-------------------
+        ## -------------------Bus Seats Booking----------------------
         bus_info_frame = Frame(self.ticket_button_frame, bg="#182356", bd=3, relief=RIDGE)
         bus_info_frame.place(x=390, y=70, width=350, height=75)
 
@@ -151,7 +152,7 @@ class Ticket:
         self.seats_buttons = []
 
         # A
-        # Row 1
+        # Row 1 #
         for i in range(5):
             row_buttons = []
             for j in range(9):
@@ -219,9 +220,22 @@ class Ticket:
         self.total_price = Label(self.footer_frame, text=f"NPR. {self.total}", fg="white", bg="gray12", font=("Arial", 12, "bold"))
         self.total_price.place(x=405, y=30)
 
+        
+        # initializating object
+        self.obj = Ticket_Info()
+
+
 
         # book button
-        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"))
+        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"), command=self.ticket_info_func)
         book_now_button.place(x=700, y=10)
+
+
+
+    def ticket_info_func(self):
+        new_window = Toplevel(self.ticket_button_frame)
+        self.obj.ticket_info_class(new_window)
+        
+
 
         
