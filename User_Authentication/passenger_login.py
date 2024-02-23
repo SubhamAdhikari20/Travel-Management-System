@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
-from tkinter import messagebox
 import customtkinter as ctk
+from Passenger_forget_password import forget_password
 
 class Passenger_Login():
     def __init__(self,window):
@@ -53,17 +53,27 @@ class Passenger_Login():
                 self.password_entry.configure(show='*')  # Hide the password
 
         checkbox_var = IntVar()
-        check_button = ctk.CTkCheckBox(self.login_frame,text="show password",variable=checkbox_var,command=show_password,checkmark_color="black",bg_color="gray38",fg_color="white",text_color="white",hover = FALSE,font=("Arial",14,"bold"),onvalue=1,offvalue=0,checkbox_width=20,checkbox_height=20)
+        check_button = ctk.CTkCheckBox(self.login_frame,text="show password",variable=checkbox_var,command=show_password,checkmark_color="black",bg_color="gray38",fg_color="white",text_color="white",hover = FALSE,font=("Arial",14,"bold"),onvalue=1,offvalue=0,checkbox_width=20,checkbox_height=20,cursor="hand2")
         check_button.place(x=80,y=320)
 
         # login_button
-        login_button = ctk.CTkButton(self.login_frame,text="Login",bg_color="gray38",width=100,fg_color="white",text_color="black",font=("arial",12,"bold"),corner_radius=20)
+        login_button = ctk.CTkButton(self.login_frame,text="Login",bg_color="gray38",width=100,fg_color="white",text_color="black",font=("arial",12,"bold"),corner_radius=20,cursor="hand2")
         login_button.place(x=150,y=355)
 
-        create_button = Button(self.login_frame,text="Create new account?",fg="white",bg="gray38",bd=0,font=("times new roman",10,"bold"))
+        create_button = Button(self.login_frame,text="Create new account?",fg="white",bg="gray38",bd=0,font=("times new roman",10,"bold"),command=self.passenger_create_account_func,cursor="hand2")
         create_button.place(x=70,y=395)
-        forget_button = Button(self.login_frame,text="Forget password?",fg="white",bg="gray38",bd=0,font=("times new roman",10,"bold"))
+        forget_button = Button(self.login_frame,text="Forget password?",fg="white",bg="gray38",bd=0,font=("times new roman",10,"bold"),command=self.passenger_forget_password_func,cursor="hand2")
         forget_button.place(x=70,y=420)
+    
+    def passenger_forget_password_func(self):
+        new_window = Toplevel()
+        obj = forget_password(new_window)
+
+    def passenger_create_account_func(self):
+        new_window = Toplevel()
+        from passenger_register import register_type
+        obj = register_type(new_window)
+        self.window_login_type.destroy()
     
 if __name__ == "__main__":
     root = Tk()
