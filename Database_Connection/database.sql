@@ -22,6 +22,20 @@ CREATE TABLE details_table(
     added_date varchar(50)
 );
 
+-- create table for storing passenger details
+
+create table passenger_details
+(
+    register_id BIGINT AUTO_INCREMENT PRIMARY KEY not null,
+    fname varchar(50),
+    lname varchar(50),
+    username varchar(50) UNIQUE not null,
+    contact varchar(50) UNIQUE not null,
+    email varchar(100) UNIQUE not null,
+    security_qn varchar(50),
+    security_ans varchar(50),
+    new_password varchar(50)
+);
 
 USE travel_ms_db;
 SELECT * FROM details_table;
