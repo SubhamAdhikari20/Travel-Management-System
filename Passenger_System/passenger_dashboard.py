@@ -20,8 +20,21 @@ class Travel:
         self.main_window = root
         self.main_window.title("Travel Managemet System")
         self.main_window.geometry("1465x740+0+0")
-        self.main_window.iconbitmap("System_Images/logo1.png")
+        self.main_window.iconbitmap("System_Images/title_logo.ico")
         self.main_window.minsize(1465, 740)
+
+
+        global primary
+        primary = self.main_window
+
+        # Variabels for account
+        self.dashboard_section_fname_var = StringVar()
+        self.dashboard_section_lname_var = StringVar()
+        self.dashboard_section_contact_var = StringVar()
+        self.dashboard_section_username_var = StringVar()
+        self.dashboard_section_email_var = StringVar()
+        self.dashboard_section_password_var = StringVar()
+        self.dashboard_section_confirm_password_var = StringVar()
         
         
         ### ------------------------------Title---------------------------------
@@ -85,13 +98,15 @@ class Travel:
 
         ## Intializing Obj
         self.ticket_obj = Ticket()
+        # self.account_obj = Account()
+        # self.assign_var_account_section()
 
         # Menu Buttons
         dashboard_button = Button(menu_button_frame, text="Dashboard", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red", command=self.dashboard_combined_func)
         dashboard_button.place(x=0, y=1, width=190, height=50)
 
-        logout_button = Button(menu_button_frame, text="Logout", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
-        logout_button.place(x=0, y=52, width=190, height=50)
+        account_button = Button(menu_button_frame, text="Account", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
+        account_button.place(x=0, y=52, width=190, height=50)
 
         self.dashboard()
         self.main_window.protocol("WM_DELETE_WINDOW", self.on_destroy_window)
@@ -599,42 +614,6 @@ class Travel:
 
 
 
-
-    # Function for tracking cursor (where or not a row is being selected or not) when buy tickets Button is pressed 
-    # After the button is pressed some values must be copied/imported to the "buy tickets" entries
-    def get_cursor_dashboard_buy_tickets(self, event=""):
-        if self.details_table_dashboard.selection(): 
-            # Select the row for coping data
-            cursor_row = self.details_table_dashboard.focus()
-            content = self.details_table_dashboard.item(cursor_row)
-            self.details_table_dashboard.config(cursor="hand2")
-            row = content["values"]
-
-            # Copy Data to ticket module 
-            if len(row) >= 15:
-                self.ticket_obj.buy_ticket_section_bus_no_var.set(row[0]),
-                self.ticket_obj.buy_ticket_section_from_var.set(row[1]),
-                self.ticket_obj.buy_ticket_section_to_var.set(row[2]),
-                self.ticket_obj.buy_ticket_section_departure_date_var.set(row[3]),
-                self.ticket_obj.buy_ticket_section_departure_time_var.set(row[4]),
-                self.ticket_obj.buy_ticket_section_bus_agency_var.set(row[5]),
-                self.ticket_obj.buy_ticket_section_fare_var.set(row[8]),
-                self.ticket_obj.buy_ticket_section_reporting_time_var.set(row[9]),
-                # Updating bus_info
-                self.ticket_obj.bus_agency_name.set(row[5]),
-                self.ticket_obj.bus_type.set(row[7])
-                
-            else:
-                print("Error: Row does not have enough elements")
-
-            # Button for opening buy_ticket_selection along with data tranfer (after the data have been saved)
-            self.buy_ticket_combined_func()
-
-        else:
-            messagebox.showerror("Error", "Select a row for Buying Tickets")
-
-
-
     def frame_creation_func(self, row):
         # Creating clickable frames for each data with its widgets
         each_info_frame = ctk.CTkFrame(self.scrollable_ticket_info_frame, height=150, fg_color="#323645", bg_color="#1f2022", corner_radius=10, border_width=1, border_color="#2f3134", cursor="hand2")
@@ -757,6 +736,14 @@ class Travel:
             # Update bus_info (assuming these are StringVar variables)
             self.ticket_obj.bus_type.set(row[7])
 
+            # Passeger data
+            # self.ticket_obj.buy_ticket_section_passenger_name_var.set(f"{self.dashboard_section_fname_var.get()} {self.dashboard_section_lname_var.get()}")
+            # self.ticket_obj.buy_ticket_section_passenger_contact_var.set(self.dashboard_section_contact_var.get())
+
+            # self.ticket_obj.buy_ticket_section_username_var.set(self.dashboard_section_username_var.get())
+            # self.ticket_obj.buy_ticket_section_email_var.set(self.dashboard_section_email_var.get())
+            # self.ticket_obj.buy_ticket_section_password_var.set(self.dashboard_section_password_var.get())
+
             # Button for opening buy_ticket_selection along with data transfer (after the data have been saved)
             self.buy_ticket_combined_func()
 
@@ -783,7 +770,7 @@ class Travel:
             # Commit the transaction
             connection.commit()
         except mysql.connector.Error as error:
-            print("Error while inserting data from MySQL", error)
+            messagebox.showerror("Error", f"An error occurred: {str(error)}")
 
         finally:
             # Close cursor and connection
@@ -824,7 +811,7 @@ class Travel:
             connection.commit()
 
         except mysql.connector.Error as error:
-            print("Error while fetching data from MySQL", error)
+            messagebox.showerror("Error", f"An error occurred: {str(error)}")
 
         finally:
             # Close cursor and connection
@@ -845,7 +832,7 @@ class Travel:
             connection.commit()
 
         except mysql.connector.Error as error:
-            print("Error while deleting data from MySQL", error)
+            messagebox.showerror("Error", f"An error occurred: {str(error)}")
 
 
         finally:
@@ -866,6 +853,10 @@ class Travel:
             self.ticket_obj.ticket_button_frame.destroy()
             self.dashboard()
 
+        elif hasattr(self.account_obj, 'account_button_frame') and self.account_obj.account_button_frame.winfo_exists():
+            # print("Inside 2") 
+            self.account_obj.account_button_frame.destroy()
+            self.dashboard()
 
         elif hasattr(self, 'dashboard_frame') and self.dashboard_frame.winfo_exists():
             # print("Inside 3")
@@ -883,10 +874,35 @@ class Travel:
             self.dashboard_frame.destroy()
             self.ticket_obj.buy_ticket(self.main_frame)
 
+        elif hasattr(self.account_obj, 'account_button_frame') and self.account_obj.account_button_frame.winfo_exists():
+            self.account_obj.account_button_frame.destroy()
+            self.ticket_obj.buy_ticket(self.main_frame)
+
         elif hasattr(self.ticket_obj, 'ticket_button_frame') and self.ticket_obj.ticket_button_frame.winfo_exists():
             # print("Inside 6") 
             self.ticket_obj.ticket_button_frame.destroy()
             self.ticket_obj.buy_ticket(self.main_frame)
+
+
+
+    def account_combined_func(self):
+        # Check if the ticket_button_frame or dashboard are already created
+        if hasattr(self.ticket_obj, 'ticket_button_frame') and self.ticket_obj.ticket_button_frame.winfo_exists():
+            # If it exists
+            self.ticket_obj.ticket_button_frame.destroy()            
+            self.account_obj.account(self.main_frame)
+            # self.assign_var_account_section()
+
+        elif hasattr(self, 'dashboard_frame') and self.dashboard_frame.winfo_exists():
+            self.insert_track_data() 
+            self.dashboard_frame.destroy()
+            self.account_obj.account(self.main_frame)
+            # self.assign_var_account_section()
+
+        elif hasattr(self.account_obj, 'account_button_frame') and self.account_obj.account_button_frame.winfo_exists():
+            self.account_obj.account_button_frame.destroy()
+            self.account_obj.account(self.main_frame) 
+            # self.assign_var_account_section()
 
 
     
