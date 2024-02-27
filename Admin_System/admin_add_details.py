@@ -17,7 +17,7 @@ class AddDetails:
         add_details_label = Label(self.add_button_frame, text="Add Details", font=("Arial", 20, "bold"), bg="black", fg="gold", bd=5, relief=RIDGE)
         add_details_label.place(x=0, y=0, width=1253, height=50)
 
-        top_left_logo = Image.open("Travel-Management-System/System_Images/logo1.png")
+        top_left_logo = Image.open("System_Images/logo1.png")
         top_left_logo = top_left_logo.resize((50, 40), Image.LANCZOS) 
         self.top_left_logo = ImageTk.PhotoImage(top_left_logo)
         label_top_left_logo = Label(add_details_label, image=self.top_left_logo)
@@ -222,7 +222,7 @@ class AddDetails:
 
         else:
             try:
-                connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db", port="3306")
+                connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db", port="3306")
                 
                 my_cursor = connection.cursor()
                 query1 = "insert into details_table values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -262,7 +262,7 @@ class AddDetails:
     # Fetch data from database to the Hospital details table
     def fetch_data(self):
         try:
-            connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db")
+            connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
             my_cursor = connection.cursor()
             my_cursor.execute("select * from details_table")
             rows = my_cursor.fetchall()
@@ -318,7 +318,7 @@ class AddDetails:
         
         else:
             try:
-                connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db")
+                connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
                 my_cursor = connection.cursor()
                 my_cursor.execute("select * from details_table where bus_no = %s", (self.bus_no_var.get(),))
                 row = my_cursor.fetchone()
@@ -349,7 +349,7 @@ class AddDetails:
     def delete_data(self):
         if self.details_table.selection():      
             try:
-                connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db")
+                connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
                 my_cursor = connection.cursor()
                 query = "delete from details_table where bus_no = %s"
                 values = (self.bus_no_var.get(),)
@@ -402,7 +402,7 @@ class AddDetails:
 
             else: 
                 try:
-                    connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db")
+                    connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
                     my_cursor = connection.cursor()
                     
                     # Check if the bus_no is present or not in bus_seat_bookings
@@ -492,7 +492,7 @@ class AddDetails:
     def reset_all_data(self):
         try:
             
-            connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db")
+            connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
             my_cursor = connection.cursor()
 
             open_main = messagebox.askyesno("Are you sure?", "All the data will be erased.", parent=self.add_button_frame)

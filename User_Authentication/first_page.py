@@ -12,7 +12,7 @@ class FirstPage:
         self.first_window.resizable(0, 0)
 
         # backgroung Image
-        self.bg_img = Image.open('Travel-Management-System/User_Authentication/images/1 copy.png')  # Update the path
+        self.bg_img = Image.open('User_Authentication/images/1 copy.png')  # Update the path
         self.bg_img_resize = self.bg_img.resize((1440, 900))
         self.bg_con = ImageTk.PhotoImage(self.bg_img_resize)
         self.bg_label = Label(self.first_window, image=self.bg_con)

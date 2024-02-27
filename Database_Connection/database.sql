@@ -37,5 +37,16 @@ create table passenger_details
     new_password varchar(50)
 );
 
+create table track_table
+(
+	track_id BIGINT AUTO_INCREMENT PRIMARY KEY not null,
+    from_place varchar(50),
+    to_place varchar(50),
+    departure_date varchar(50),
+    searchby_combox varchar(50),
+    searchby_entry varchar(50)
+);
+
 USE travel_ms_db;
 SELECT * FROM details_table;
+SELECT * FROM track_table;

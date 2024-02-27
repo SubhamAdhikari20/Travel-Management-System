@@ -128,14 +128,14 @@ class register_type:
         register_button_img = Image.open("User_Authentication/images/register_button_img.png")
         resize_register_img = register_button_img.resize((125,50))
         self.register_button_img = ImageTk.PhotoImage(resize_register_img)
-        re_button = Button(register_frame,image=self.register_button_img,bd=0,bg="white",activebackground="white",cursor="hand2")
+        re_button = Button(register_frame,image=self.register_button_img,bd=0,bg="white",activebackground="white",cursor="hand2", command=self.db_connect)
         re_button.place(x=500,y=480,width=125,height=50)
 
         #login_button
         login_button_img = Image.open("User_Authentication/images/login_button_img.png")
         resize_login_button = login_button_img.resize((125,50))
         self.login_button_img = ImageTk.PhotoImage(resize_login_button)
-        lo_button = Button(register_frame,image=self.login_button_img,bd=0,bg="white",command=self.return_login_page,activebackground="white",cursor="hand2")
+        lo_button = Button(register_frame,image=self.login_button_img,bd=0,bg="white",activebackground="white",cursor="hand2", command=self.return_login_page)
         lo_button.place(x=800,y=480)
 
 
@@ -177,8 +177,8 @@ class register_type:
                     if row is not None:
                         messagebox.showerror("Error","You already have account",parent = self.window_register_type)
                     else:
-                        quary2 = "insert into passenger_details values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        values2 = (self.fname,self.lname,self.email,self.contact,self.address,self.security_qn,self.security_ans,self.username,self.setpass)
+                        quary2 = "insert into passenger_details (fname, lname, username, contact, email, address, security_qn, security_ans, new_password) values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        values2 = (self.fname,self.lname,self.username,self.contact,self.email,self.address,self.security_qn,self.security_ans,self.setpass)
                         my_cursor.execute(quary2,values2) 
                         connection.commit()
                         messagebox.showinfo("Success","Id created successfully",parent = self.window_register_type)

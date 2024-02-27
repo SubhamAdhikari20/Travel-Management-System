@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
 import customtkinter as ctk
+from tkinter import messagebox
+import mysql.connector
 
 class forget_password:
     def __init__(self,window):
@@ -36,10 +38,10 @@ class forget_password:
         #security_question
         s_ques_label = Label(forget_frame,text="Security Question",font=("amiri",12,"bold"),bg="gray38",fg="white")
         s_ques_label.place(x=70,y=120)
-        security_qn_combo_box = ttk.Combobox(forget_frame, font=("Amiri", 12,"bold"), state="readonly",width=18,)
-        security_qn_combo_box["values"] = ("Select", "Favorite movie","Favorite food")
-        security_qn_combo_box.current(0)
-        security_qn_combo_box.place(x=70, y=150)
+        self.security_qn_combo_box = ttk.Combobox(forget_frame, font=("Amiri", 12,"bold"), state="readonly",width=18,)
+        self.security_qn_combo_box["values"] = ("Select", "Favorite movie","Favorite food")
+        self.security_qn_combo_box.current(0)
+        self.security_qn_combo_box.place(x=70, y=150)
 
         #security answer
         s_ans_label = Label(forget_frame,text="Security answer",bg="gray38",font=("amiri",12,"bold"),fg="white")
@@ -87,8 +89,58 @@ class forget_password:
         self.close_btn1.place(x=228,y=363)
 
         #button
-        reset_button = ctk.CTkButton(forget_frame,text="Reset",font=("amiri",12,"bold"),corner_radius=20,bg_color="gray38",fg_color="white",text_color="black",width=80)
+        reset_button = ctk.CTkButton(forget_frame,text="Reset",font=("amiri",12,"bold"),corner_radius=20,bg_color="gray38",fg_color="white",text_color="black",width=80, command=self.check)
         reset_button.place(x=130,y=400)
+
+
+    def check(self):
+        reset_p = self.re_password_entry.get()
+        conform_p = self.con_password_entry.get()
+
+        if self.security_ans_entry.get() == "" or self.email_entry.get() == "" or self.re_password_entry.get() == "" or self.con_password_entry == "" or self.security_qn_combo_box.get() == "":
+            messagebox.showerror("Error","Fill all the details",parent = self.forget_pass)
+
+        elif self.security_qn_combo_box.get() == "Select":
+            messagebox.showerror("Error", "Select a query!", parent = self.forget_pass)
+
+        elif self.re_password_entry.get() != self.con_password_entry.get():
+            messagebox.showerror("Error","Conform password does not match", parent = self.forget_pass)
+
+        else:
+            try:
+                connection = mysql.connector.connect(
+                    host = "localhost",
+                    username = "root",
+                    password = "#Nbchand07",
+                    database = "travel_ms_db"
+                )
+                my_cursor = connection.cursor()
+                quary1 = "select * from passenger_details where (email = %s or username = %s) and security_qn = %s and security_ans = %s"
+                values1 = (self.email_entry.get(), self.email_entry.get(), self.security_qn_combo_box.get(), self.security_ans_entry.get())
+                my_cursor.execute(quary1,values1)
+                row = my_cursor.fetchone()
+
+                if row is None:
+                    messagebox.showerror("error","Email or security Question is wrong", parent = self.forget_pass)
+                
+                else:
+                    update_quary = "update passenger_details set new_password = %s where (email = %s or username = %s)"
+                    update_values = (reset_p, self.email_entry.get(), self.email_entry.get())
+                    my_cursor.execute(update_quary,update_values)
+
+                connection.commit()
+                messagebox.showinfo("success","Password changed successfully", parent = self.forget_pass)
+                self.forget_pass.destroy()
+
+            except Exception as e:
+                messagebox.showerror("Error",f"an error occured: {str(e)}", parent = self.forget_pass)
+
+            finally:
+                if connection.is_connected():
+                    connection.close()
+                    my_cursor.close()
+
+
 
     
 if __name__ == "__main__":
