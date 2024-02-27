@@ -904,6 +904,11 @@ class Travel:
             self.account_obj.account(self.main_frame) 
             # self.assign_var_account_section()
 
+    @staticmethod
+    def main_window_destroy():
+        open_main = messagebox.askyesno("Yes NO", "Will be logged out. Are you sure?", parent=primary)
+        if open_main == 1:
+            primary.destroy()
 
     
 
