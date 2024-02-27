@@ -3,7 +3,8 @@ from tkinter import ttk
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from tkinter import messagebox
-
+import mysql.connector as mysql
+import admin_login
 
 class register_type:
     def __init__(self,window):
@@ -12,7 +13,7 @@ class register_type:
         self.window_register_type.title('Admin resgister')
         self.window_register_type.resizable(0,0)
         #bg_image
-        bg2 = Image.open("Travel-Management-System/User_Authentication/images/bg2.jpg")
+        bg2 = Image.open("User_Authentication/images/bg2.jpg")
         resize_bg2 = bg2.resize((1440,900))
         self.bg2_image = ImageTk.PhotoImage(resize_bg2)
         Label(self.window_register_type,image=self.bg2_image).place(x=0,y=0) 
@@ -23,7 +24,7 @@ class register_type:
         self.register_frame.place(x=180,y=100,width=1200,height=600)
   
         #regiter_bg
-        left_img = Image.open("Travel-Management-System/User_Authentication/images/left_bg_img1.jpg")
+        left_img = Image.open("User_Authentication/images/left_bg_img1.jpg")
         resize_left_img = left_img.resize((410,600))
         self.left_img_image = ImageTk.PhotoImage(resize_left_img)
         Label(self.register_frame,image=self.left_img_image).place(x=-5,y=-5,width=410,height=600)
@@ -92,47 +93,103 @@ class register_type:
         self.che_button.place(x=480,y=430)
 
         #register_button
-        register_button_img = Image.open("Travel-Management-System/User_Authentication/images/register_button_img.png")
+        register_button_img = Image.open("User_Authentication/images/register_button_img.png")
         resize_register_img = register_button_img.resize((125,50))
         self.register_button_img = ImageTk.PhotoImage(resize_register_img)
-        re_button = Button(self.register_frame,image=self.register_button_img,borderwidth=0)
+        re_button = Button(self.register_frame,image=self.register_button_img,borderwidth=0,command=self.db_connect)
         re_button.place(x=500,y=480,width=125,height=50)
 
         #login_button
-        login_button_img = Image.open("Travel-Management-System/User_Authentication/images/login_button_img.png")
+        login_button_img = Image.open("User_Authentication/images/login_button_img.png")
         resize_login_button = login_button_img.resize((125,50))
         self.login_button_img = ImageTk.PhotoImage(resize_login_button)
-        lo_button = Button(self.register_frame,image=self.login_button_img,borderwidth=0)
+        lo_button = Button(self.register_frame,image=self.login_button_img,borderwidth=0,command=self.login)
         lo_button.place(x=800,y=480)
 
 
  # eye image
 
         def hide():
-           self.open_eye.configure(file='Travel-Management-System/User_Authentication/images/closeye.png')
+           self.open_eye.configure(file='User_Authentication/images/closeye.png')
            self.pass_entry.configure(show='*')
            self.open_btn.configure(command=show)
         def show():
-            self.open_eye.configure(file='Travel-Management-System/User_Authentication/images/openeye.png')
+            self.open_eye.configure(file='User_Authentication/images/openeye.png')
             self.pass_entry.configure(show='')
             self.open_btn.configure(command=hide)
             
-        self.open_eye=PhotoImage(file='Travel-Management-System/User_Authentication/images/openeye.png')
+        self.open_eye=PhotoImage(file='User_Authentication/images/openeye.png')
         self.open_btn=Button(self.register_frame,image=self.open_eye,bg='white',bd=0,height=22,cursor='hand',command=hide)
         self.open_btn.place(x=620,y=370)
        
         def hide1():
-           self.open_eye1.configure(file='Travel-Management-System/User_Authentication/images/closeye.png')
+           self.open_eye1.configure(file='User_Authentication/images/closeye.png')
            self.cpass_entry.configure(show='*')
            self.open_btn1.configure(command=show1)
         def show1():
-            self.open_eye1.configure(file='Travel-Management-System/User_Authentication/images/openeye.png')
+            self.open_eye1.configure(file='User_Authentication/images/openeye.png')
             self.cpass_entry.configure(show='')
             self.open_btn1.configure(command=hide1)
             
-        self.open_eye1=PhotoImage(file='Travel-Management-System/User_Authentication/images/openeye.png')
+        self.open_eye1=PhotoImage(file='User_Authentication/images/openeye.png')
         self.open_btn1=Button(self.register_frame,image=self.open_eye1,bg='white',bd=0,height=22,cursor='hand',command=hide1)
         self.open_btn1.place(x=1020,y=370)
+
+    def login(self):
+            new=Toplevel()
+            obj=admin_login.Admin_login(new)
+            self.window_register_type.destroy()
+       
+
+    def db_connect(self):
+            fname = self.f_name_entry.get()
+            lname = self.l_name_entry.get()
+            email = self.E_mail_entry.get()
+            contact = self.contact_entry.get()
+            address = self.address_entry.get()
+            security_qn = self.security_qn_combo_box.get()
+            security_ans = self.s_answer_entry.get()
+            username = self.u_name_entry.get()
+            setpass = self.pass_entry.get()
+            cpass = self.cpass_entry.get()
+
+            if fname == "" or lname == "" or email == "" or contact == "" or address == "" or security_qn=='' or security_ans == "" or username == "" or setpass == "" or cpass == "" :
+                messagebox.showerror("Error","Fill all the details")
+            elif security_qn=='Select':
+                 messagebox.showerror("Error","Select your security question")
+            elif setpass != cpass:
+                messagebox.showerror("Error","Both password not match")
+            elif self.terms_conditions.get() == 0:
+                messagebox.showerror("Error","Accept terms and conditions")
+            else:
+                try:
+                    connection = mysql.connect(
+                        host = "localhost",
+                        username = "root",
+                        password = "root",
+                        database = "user_authentication"
+                    )
+                    my_cursor = connection.cursor()
+        
+                    quary1 = "select * from register where email = %s"
+                    values1 = (email,)
+                    my_cursor.execute(quary1,values1)
+                    row = my_cursor.fetchone()
+                    if row is not None and row[4]==email:
+                        messagebox.showerror("Error","email already taken ")
+                    else:
+                        quary2 = "insert into register values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                        values2 = (fname,lname,username,email,contact,address,security_qn,security_ans,setpass,)
+                        my_cursor.execute(quary2,values2) 
+                        connection.commit()
+                        messagebox.showinfo("Success","Id created successfully")
+
+                except Exception as e:
+                    messagebox.showerror("Error",f"an error occured: {str(e)}")
+
+                finally:
+                    if connection.is_connected():
+                        connection.close()   
 
 
 

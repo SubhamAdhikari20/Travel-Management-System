@@ -2,6 +2,8 @@ from tkinter import*
 import customtkinter as ctk
 from PIL import Image, ImageTk
 from tkinter import ttk
+from tkinter import messagebox
+import mysql.connector as mysql
 
 
 class admin_forgot:
@@ -11,7 +13,7 @@ class admin_forgot:
         self.forgot_window.geometry('1440x900+0+0')
         self.forgot_window.resizable(0,0)    
 
-        self.bg_img=Image.open('Travel-Management-System/User_Authentication/images/forget_password.jpg')
+        self.bg_img=Image.open('User_Authentication/images/forget_password.jpg')
         self.bg_resize=self.bg_img.resize((1440,900))
         self.bg_con=ImageTk.PhotoImage(self.bg_resize)
         self.bg_label=Label(self.forgot_window,image=self.bg_con)
@@ -53,15 +55,15 @@ class admin_forgot:
         self.reset_entry.place(x=600,y=510)
 
         def hide():
-           self.open_eye.configure(file='Travel-Management-System/User_Authentication/images/closeye.png')
+           self.open_eye.configure(file='User_Authentication/images/closeye.png')
            self.reset_entry.configure(show='*')
            self.open_btn.configure(command=show)
         def show():
-            self.open_eye.configure(file='Travel-Management-System/User_Authentication/images/openeye.png')
+            self.open_eye.configure(file='User_Authentication/images/openeye.png')
             self.reset_entry.configure(show='')
             self.open_btn.configure(command=hide)
             
-        self.open_eye=PhotoImage(file='Travel-Management-System/User_Authentication/images/openeye.png')
+        self.open_eye=PhotoImage(file='User_Authentication/images/openeye.png')
         self.open_btn=Button(self.forgot_window,image=self.open_eye,bg='white',bd=0,height=24,cursor='hand',command=hide)
         self.open_btn.place(x=783,y=511)
 
@@ -73,23 +75,82 @@ class admin_forgot:
 
 
         def hide1():
-           self.open_eye1.configure(file='Travel-Management-System/User_Authentication/images/closeye.png')
+           self.open_eye1.configure(file='User_Authentication/images/closeye.png')
            self.con_entry.configure(show='*')
            self.open_btn1.configure(command=show1)
         def show1():
-            self.open_eye1.configure(file='Travel-Management-System/User_Authentication/images/openeye.png')
+            self.open_eye1.configure(file='User_Authentication/images/openeye.png')
             self.con_entry.configure(show='')
             self.open_btn1.configure(command=hide1)
             
-        self.open_eye1=PhotoImage(file='Travel-Management-System/User_Authentication/images/openeye.png')
+        self.open_eye1=PhotoImage(file='User_Authentication/images/openeye.png')
         self.open_btn1=Button(self.forgot_window,image=self.open_eye1,bg='white',bd=0,height=24,cursor='hand',command=hide1)
         self.open_btn1.place(x=783,y=591)
         
 
 
     # reset Button
-        self.reset_btn=ctk.CTkButton(self.forgot_window,text='Reset',fg_color='white',text_color='black',font=('aerial',20),width=70)
+        self.reset_btn=ctk.CTkButton(self.forgot_window,text='Reset',fg_color='white',text_color='black',font=('aerial',20),width=70,command=self.reset)
         self.reset_btn.place(x=670,y=650)
+
+    def reset(self):
+        username = self.user_entry.get()
+        answer = self.ans_entry.get()
+        reset_pass = self.reset_entry.get()
+        con_pass = self.con_entry.get()
+
+        if username == '' or answer == '' or reset_pass == '' or con_pass == '':
+            messagebox.showerror("Error", 'Enter all details')
+            return
+
+        if reset_pass != con_pass:
+            messagebox.showerror('Error', 'Both passwords do not match')
+            return
+
+        try:
+            connection = mysql.connect(
+                host='localhost',
+                user='root',
+                password='root',
+                database='user_authentication'
+            )
+            cursor = connection.cursor()
+            query = 'SELECT * FROM register WHERE username = %s OR email = %s'
+            cursor.execute(query, (username, username))
+            row = cursor.fetchone()
+
+            if row is None:
+                messagebox.showerror('Error', 'Invalid username/email')
+            else:
+                if row[7] != answer:
+                    messagebox.showerror('Error', 'Incorrect security answer')
+                else:
+                    query = 'UPDATE register SET password = %s WHERE sec_ans = %s'
+                    cursor.execute(query, (reset_pass, answer))
+                    connection.commit()
+                    messagebox.showinfo("Success", "Password reset successfully")
+
+        except Exception as e:
+                    messagebox.showerror("Error",f"an error occured: {str(e)}")
+
+        finally:
+                    if connection.is_connected():
+                        connection.close() 
+
+    # def return_login_page(self):
+    #     connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
+
+    #     my_cursor = connection.cursor()
+    #     query2 = "select * from register where email = %s or username = %s"
+    #     values2 = (self.email.get(), self.username.get())
+    #     my_cursor.execute(query2, values2)
+    #     row = my_cursor.fetchone()
+    #     if row == None:
+    #         messagebox.showerror("Error", "Needs registration before login", parent=self.root)
+    #     else: 
+    #         self.root.destroy()
+
+
 
 
 
