@@ -1,9 +1,6 @@
 from tkinter import *
 import customtkinter as ctk
 from PIL import ImageTk, Image
-from passenger_login import Passenger_Login 
-from admin_login import Admin_login
-from admin_code import admin_code
 
 class FirstPage:
     def __init__(self, first_window):
@@ -73,7 +70,7 @@ class FirstPage:
         ctk.CTkLabel(self.sign_frame, text='want to sign in to?', bg_color='#5B5858', fg_color='#5B5858', height=10,text_color='white').place(x=210, y=95)
         
         # passenger and admin button
-        self.sign_passenger = ctk.CTkButton(self.sign_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200)
+        self.sign_passenger = ctk.CTkButton(self.sign_frame, text='Passenger', fg_color='#319BA9', bg_color='#5B5858', text_color='white', font=('Arial', 18),corner_radius=40, height=70, width=200,command=self.passenger_register_func)
         self.sign_passenger.place(x=160, y=130)
         self.sign_admin_btn= ctk.CTkButton(self.sign_frame, text='Admin', fg_color='#319BA9', bg_color='#5B5858',text_color='white', corner_radius=40, font=('Arial', 18), width=200,height=70,command=self.code_admin)
         self.sign_admin_btn.place(x=160, y=210)
@@ -103,20 +100,28 @@ class FirstPage:
 
     def admin_login(self):
         new=Toplevel(self.first_window)
+        from admin_login import Admin_login
         obj=Admin_login(new)
 
     def code_admin(self):
         new=Toplevel(self.first_window)
+        from admin_code import admin_code
         obj=admin_code(new)
        
 
-
-
     def passenger_login_func(self):
         new_window = Toplevel()
+        from passenger_login import Passenger_Login
         obj = Passenger_Login(new_window)
 
+        
+    def passenger_register_func(self):
+        new_window = Toplevel()
+        from passenger_register import register_type
+        obj = register_type(new_window)
 
+
+        
 if __name__ == "__main__":
     root = Tk()
     first_window_obj = FirstPage(root)
