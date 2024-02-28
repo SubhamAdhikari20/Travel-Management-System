@@ -87,6 +87,7 @@ class Ticket:
         combo_box_from["values"] = ["Select", "Kathmandu", "Pokhara", "Nepalgunj", "Surkhet"]
         combo_box_from.current(0)
         combo_box_from.place(x=150, y=250, width=200, height=30)
+        
 
         to_label = Label(ticket_details_frame, text="To:", font=("Arial", 12, "bold"), bg="lightblue")
         to_label.place(x=5, y=290)
