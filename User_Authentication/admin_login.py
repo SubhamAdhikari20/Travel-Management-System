@@ -72,7 +72,8 @@ class Admin_login():
 
         # login Button
         login_button = ctk.CTkButton(login_frame,text="Login",text_color='black',fg_color="white", font=("Arial",12,"bold"), command=self.login_btn_func)
-  
+        login_button.place(x=120,y=340)
+
         # creating and forgot Button
         self.new_acc_btn=ctk.CTkButton(login_frame,text="Create new account?",text_color="white",fg_color="gray38",font=("times new roman",15,"bold"),command=self.code).place(x=40,y=410)
 

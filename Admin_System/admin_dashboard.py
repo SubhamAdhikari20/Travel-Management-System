@@ -123,7 +123,7 @@ class Travel:
         self.ticket_obj = Ticket()
         self.add_details_obj = AddDetails()
         self.account_obj = Account()
-        # self.assign_var_account_section()
+
 
         # Menu Buttons
         dashboard_button = Button(menu_button_frame, text="Dashboard", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red", command=self.dashboard_combined_func)

@@ -93,10 +93,8 @@ class Ticket:
 
         from_label = Label(ticket_details_frame, text="From:", font=("Arial", 12, "bold"), bg="lightblue")
         from_label.place(x=5, y=250)
-        combo_box_from = ttk.Combobox(ticket_details_frame, font=("Arial", 12, "bold"), width=15, state="readonly", cursor="hand2", textvariable=self.buy_ticket_section_from_var)
-        combo_box_from["values"] = ["Select", "Kathmandu", "Pokhara", "Nepalgunj", "Surkhet"]
-        combo_box_from.current(0)
-        combo_box_from.place(x=150, y=250, width=200, height=30)
+        combo_box_frome_entry_label = Label(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_from_var, anchor=W, bg="white", borderwidth=1, relief=RIDGE)
+        combo_box_frome_entry_label.place(x=150, y=250, width=200, height=30)
        
         combo_box_frome_entry_label = Label(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_from_var, anchor=W, bg="white", borderwidth=1, relief=RIDGE)
         combo_box_frome_entry_label.place(x=150, y=250, width=200, height=30)
@@ -254,14 +252,10 @@ class Ticket:
         self.total_price = Label(self.footer_frame, text=f"NPR. {self.total}", fg="white", bg="gray12", font=("Arial", 12, "bold"))
         self.total_price.place(x=405, y=30)
         
-        # initializating object
-        self.obj = Ticket_Info()
-
         # book button
-        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"), command=self.ticket_info_func)
+        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"), command=self.create_booking_confirmation_window)
         book_now_button.place(x=700, y=10)
 
-      
         # cancel button
         self.cancel_button = None
 

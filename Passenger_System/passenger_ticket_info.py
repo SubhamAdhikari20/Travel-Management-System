@@ -74,7 +74,7 @@ class Ticket_Info:
         buy_ticket_button.place(x=325, y=600, width=120, height=50)
   
         self.main_window.grab_set()
-
+        self.main_window.protocol("WM_DELETE_WINDOW", self.destroy_window)
     
     
     def welcome(self):
@@ -129,16 +129,13 @@ class Ticket_Info:
                     y_offset -= 20  # Move to the next line
                 
                 c.save()
-                # messagebox.showinfo("Success", "PDF saved successfully!")
 
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to save PDF: {e}", parent=self.main_window)
 
 
             finally:
-                from passenger_buy_tickets import Ticket
-                Ticket.destroy_confirm_window()
-                self.main_window.destroy()
+                self.destroy_window()
 
 
 
@@ -182,6 +179,11 @@ class Ticket_Info:
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+
+    def destroy_window(self):
+        from passenger_buy_tickets import Ticket
+        Ticket.destroy_confirm_window()
+        self.main_window.destroy()
 
 
 
