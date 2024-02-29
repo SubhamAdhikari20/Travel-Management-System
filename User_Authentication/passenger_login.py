@@ -4,14 +4,18 @@ import customtkinter as ctk
 from tkinter import messagebox
 import mysql.connector
 import sys
-sys.path.append(r"C:\Users\User\OneDrive\Desktop\Travel management system\Travel-Management-System\Passenger_System")
-from passenger_dashboard import Travel 
+
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
 class Passenger_Login():
     def __init__(self,window):
         self.window_login_type = window
-        self.window_login_type.geometry("1536x785+0+0")
+        self.window_login_type.geometry("1465x740+0+0")
         self.window_login_type.title("Logintype")
+        self.window_login_type.minsize(1465, 750)
+        self.window_login_type.iconbitmap("System_Images/title_logo.ico")
 
         #background_img
         bg = Image.open("User_Authentication/images/login_bg.jpg")
@@ -28,27 +32,29 @@ class Passenger_Login():
         logo = Image.open("User_Authentication/images/login_logo.png")
         resize_logo = logo.resize((100,100))
         self.logo_image = ImageTk.PhotoImage(resize_logo)
-        Label(self.login_frame,image=self.logo_image,bg="gray38").place(x=150,y=20,width=100,height=100)
+        Label(self.login_frame,image=self.logo_image,bg="gray38").place(x=140,y=10,width=100,height=100)
         
         #labels
-        Label(self.login_frame,text="Login",bg="gray38",fg="white",font=("arial",12,"bold")).place(x=175,y=125)
+        Label(self.login_frame,text="Login",bg="gray38",fg="white",font=("Arial",20,"bold")).place(x=150,y=110)
 
         # username
-        Label(self.login_frame,text="Username",bg="gray38",fg="white",font=("arial",16,"bold")).place(x=110,y=160)
+        self.passenger_username = StringVar()
+        Label(self.login_frame,text="Username",bg="gray38",fg="white",font=("Arial",16,"bold")).place(x=110,y=160)
         user_logo = Image.open("User_Authentication/images/username_logo.png")
         resize_user_logo = user_logo.resize((30,30))
         self.user_logo_image = ImageTk.PhotoImage(resize_user_logo)
         Label(self.login_frame,image=self.user_logo_image,bg="gray38").place(x=70,y=155)
-        self.username_entry = ctk.CTkEntry(self.login_frame,textvariable=StringVar(),width=250,font=("arial",24,"bold"),corner_radius=20)
+        self.username_entry = ctk.CTkEntry(self.login_frame,textvariable=self.passenger_username,width=250,font=("Arial",20,"bold"),corner_radius=20, height=35)
         self.username_entry.place(x=70,y=195)
 
         #password
-        Label(self.login_frame,text="Password",bg="gray38",fg="white",font=("arial",16,"bold")).place(x=110,y=250)
+        self.passenger_password = StringVar()
+        Label(self.login_frame,text="Password",bg="gray38",fg="white",font=("Arial",16,"bold")).place(x=110,y=250)
         p_logo = Image.open("User_Authentication/images/password_logo.png")
         resize_p_logo = p_logo.resize((30,30))
         self.p_logo_image = ImageTk.PhotoImage(resize_p_logo)
         Label(self.login_frame,image=self.p_logo_image,bg="gray38").place(x=70,y=245)
-        self.password_entry = ctk.CTkEntry(self.login_frame,textvariable=StringVar(),show = "*",width=250,font=("arial",24,"bold"),corner_radius=20)
+        self.password_entry = ctk.CTkEntry(self.login_frame, textvariable=self.passenger_password, show = "*",width=250,font=("Arial",20,"bold"),corner_radius=20, height=35)
         self.password_entry.place(x=70,y=280)
         def show_password():
             if checkbox_var.get() == 1:  # If checkbox is checked
@@ -61,7 +67,7 @@ class Passenger_Login():
         check_button.place(x=80,y=320)
 
         # login_button
-        login_button = ctk.CTkButton(self.login_frame,text="Login",bg_color="gray38",width=100,fg_color="white",text_color="black",font=("arial",12,"bold"),corner_radius=20,cursor="hand2", command=self.authentication)
+        login_button = ctk.CTkButton(self.login_frame,text="Login",bg_color="gray38",width=100,fg_color="white",text_color="black",font=("Arial",12,"bold"),corner_radius=20,cursor="hand2", command=self.authentication)
         login_button.place(x=150,y=355)
 
         create_button = Button(self.login_frame,text="Create new account?",fg="white",bg="gray38",bd=0,font=("times new roman",10,"bold"), cursor="hand2", command=self.passenger_create_account_func)
@@ -81,7 +87,7 @@ class Passenger_Login():
                 Connection = mysql.connector.connect(
                     host = "localhost",
                     username = "root",
-                    password = "#Nbchand07",
+                    password = "Root@123",
                     database = "travel_ms_db"               
                   )
                 my_cursor = Connection.cursor()
@@ -93,19 +99,24 @@ class Passenger_Login():
                 if row is None:
                     messagebox.showerror("Error","Invalid Username or Password", parent=self.window_login_type)
                 else:
-                    open_main = messagebox.askyesno("Yes NO", "Access only by admin?", parent=self.window_login_type)
-                    if open_main == 1:
-                        self.new_window2 = Toplevel(self.window_login_type)
-                        self.admin_dash_obj = Travel(self.new_window2)
+                    
+                    self.new_window2 = Toplevel(self.window_login_type)
+                    sys.path.append(r"C:\Users\subha\.vscode\Travel_MS_Project\Passenger_System")
+                    from passenger_dashboard import Travel 
+                    self.passenger_dash_obj = Travel(self.new_window2)
 
-                        # Set the account data for account_section
-                        self.admin_dash_obj.dashboard_section_fname_var.set(row[1])
-                        self.admin_dash_obj.dashboard_section_lname_var.set(row[2])
-                        self.admin_dash_obj.dashboard_section_username_var.set(row[3])
-                        self.admin_dash_obj.dashboard_section_contact_var.set(row[4])
-                        self.admin_dash_obj.dashboard_section_email_var.set(row[5])
-                        self.admin_dash_obj.dashboard_section_password_var.set(row[8])
-                        self.admin_dash_obj.dashboard_section_confirm_password_var.set(row[8])
+                    # Set the account data for account_section
+                    self.passenger_dash_obj.dashboard_section_fname_var.set(row[1])
+                    self.passenger_dash_obj.dashboard_section_lname_var.set(row[2])
+                    self.passenger_dash_obj.dashboard_section_username_var.set(row[3])
+                    self.passenger_dash_obj.dashboard_section_contact_var.set(row[5])
+                    self.passenger_dash_obj.dashboard_section_email_var.set(row[6])
+                    self.passenger_dash_obj.dashboard_section_password_var.set(row[9])
+                    self.passenger_dash_obj.dashboard_section_confirm_password_var.set(row[9])
+
+                    self.passenger_username.set("")
+                    self.passenger_password.set("")
+
                     
                     Connection.commit()
             except Exception as e:
@@ -126,7 +137,7 @@ class Passenger_Login():
                 Connection = mysql.connector.connect(
                     host = "localhost",
                     username = "root",
-                    password = "#Nbchand07",
+                    password = "Root@123",
                     database = "travel_ms_db"               
                   )
                 my_cursor = Connection.cursor()
@@ -157,7 +168,7 @@ class Passenger_Login():
         new_window = Toplevel()
         from passenger_register import register_type
         obj = register_type(new_window)
-        self.window_login_type.destroy()
+
     
 
 if __name__ == "__main__":

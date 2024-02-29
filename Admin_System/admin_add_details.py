@@ -180,8 +180,9 @@ class AddDetails:
         self.details_table.column("date", width=150, anchor=CENTER, minwidth=150)
 
         self.details_table.pack(fill=BOTH, expand=True)
-        self.details_table.bind("<Enter>", self.details_table.config(cursor="hand2"))
 
+        self.details_table.bind("<ButtonRelease-1>", self.get_cursor)
+        self.details_table.bind("<Enter>", self.details_table.config(cursor="hand2"))
 
         self.fetch_data()
         self.style_func()
@@ -191,22 +192,22 @@ class AddDetails:
         button_frame = Frame(self.add_button_frame, bg="lightblue", bd = 5, relief=RIDGE)
         button_frame.place(x=5, y=305, width=1243, height=72)
 
-        add_data_button = Button(button_frame, text="Add", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold")
+        add_data_button = Button(button_frame, text="Add", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold", command=self.add_details_db)
         add_data_button.place(x=0, y=0, width=200, height=61)
         
-        update_data_button = Button(button_frame, text="Update", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold")
+        update_data_button = Button(button_frame, text="Update", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold", command=self.update_data)
         update_data_button.place(x=201, y=0, width=200, height=61)
         
-        delete_data_button = Button(button_frame, text="Delete", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold")
+        delete_data_button = Button(button_frame, text="Delete", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold", command=self.delete_data)
         delete_data_button.place(x=402, y=0, width=200, height=61)
         
-        clear_data_button = Button(button_frame, text="Clear", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold")
+        clear_data_button = Button(button_frame, text="Clear", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold", command=self.clear_data)
         clear_data_button.place(x=603, y=0, width=200, height=61)
 
-        restore_data_button = Button(button_frame, text="Restore", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold")
+        restore_data_button = Button(button_frame, text="Restore", font=("Arial", 15, "bold"),bg="blue", fg="white", cursor="hand2", highlightthickness=5, activebackground="darkblue", activeforeground="gold", command=self.restore_data)
         restore_data_button.place(x=804, y=0, width=200, height=61)
         
-        reset_data_button = Button(button_frame, text="Reset", font=("Arial", 15, "bold"),bg="red", fg="white", cursor="hand2", bd=10, highlightthickness=5, activebackground="orange", activeforeground="gray12")
+        reset_data_button = Button(button_frame, text="Reset", font=("Arial", 15, "bold"),bg="red", fg="white", cursor="hand2", bd=10, highlightthickness=5, activebackground="orange", activeforeground="gray12", command=self.reset_all_data)
         reset_data_button.place(x=1032, y=0, width=200, height=61)
 
 

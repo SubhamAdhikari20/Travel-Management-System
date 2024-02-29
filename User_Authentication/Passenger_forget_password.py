@@ -5,15 +5,21 @@ import customtkinter as ctk
 from tkinter import messagebox
 import mysql.connector
 
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 class forget_password:
     def __init__(self,window):
         self.forget_pass = window
-        self.forget_pass.geometry("1536x785+0+0")
+        self.forget_pass.geometry("1465x740+0+0")
         self.forget_pass.title("forget Password")
+        self.forget_pass.minsize(1465, 740)
+        self.forget_pass.iconbitmap("System_Images/title_logo.ico")
 
         #image
         bg1 = Image.open("User_Authentication/images/user_forget_password.jpg")
-        resize_bg1 = bg1.resize((1536,786))
+        resize_bg1 = bg1.resize((1465,750))
         self.bg1_img =ImageTk.PhotoImage(resize_bg1)
         bg_label = Label(self.forget_pass,image=self.bg1_img)
         bg_label.place(x=0,y=0)
@@ -25,9 +31,6 @@ class forget_password:
         forget_label = Label(forget_frame,text="Forget Password?",font=("amiri",14,"bold"),bg="gray38",fg="white")
         forget_label.place(x=85,y=10)
         
-        #back
-        back_button = Button(forget_frame,text="X",font=("amiri",12,"bold"),bg="gray38",fg="white",bd=0)
-        back_button.place(x=0,y=0)
 
         # email
         email_label = Label(forget_frame,text="Email",font=("amiri",12,"bold"),bg="gray38",fg="white")
@@ -111,7 +114,7 @@ class forget_password:
                 connection = mysql.connector.connect(
                     host = "localhost",
                     username = "root",
-                    password = "#Nbchand07",
+                    password = "#Root@123",
                     database = "travel_ms_db"
                 )
                 my_cursor = connection.cursor()

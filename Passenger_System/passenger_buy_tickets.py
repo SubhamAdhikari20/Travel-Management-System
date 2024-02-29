@@ -8,6 +8,7 @@ import customtkinter as ctk
 from datetime import datetime
 import json
 from mysql.connector import Error
+from passenger_ticket_info import Ticket_Info
 
 class Ticket:
     def __init__(self):
@@ -257,7 +258,7 @@ class Ticket:
         self.cancel_button = None
 
         # Ticket Info initiallization
-        # self.ticket_info_obj = Ticket_Info()
+        self.ticket_info_obj = Ticket_Info()
 
 
 
@@ -485,10 +486,12 @@ class Ticket:
 
                 # Ticket Generation Data and Window
                 self.insert_ticket_info_data(seats_ls)
-                new_window = Toplevel(self.confirm_transaction_window)
+                new_window = Toplevel(self.ticket_button_frame)
                 self.ticket_info_obj.ticket_info_class(new_window)
 
                 self.create_cancel_button()
+                global confirm_transaction
+                confirm_transaction = self.confirm_transaction_window
             
                     
                 # Reseting the selected seats and total price
@@ -589,7 +592,7 @@ class Ticket:
                                 cursor.execute(query6, values6)
                             
                                 messagebox.showinfo("Sucess", "Cancelled", parent=self.confirm_cancel_window)
-
+                                self.confirm_cancel_window.destroy()
                     
                         connection.commit()
                         self.cancel_button.destroy()
@@ -787,19 +790,7 @@ class Ticket:
         self.ticket_info_obj.info_ticket_section_passenger_name_var.set(self.buy_ticket_section_passenger_name_var.get())
         self.ticket_info_obj.info_ticket_section_passenger_contact_var.set(self.buy_ticket_section_passenger_contact_var.get())
         self.ticket_info_obj.info_ticket_section_bus_no_var.set(self.bus_no)
-        # self.ticket_info_obj.info_ticket_section_booked_date_var.set(datetime.now().strftime("%Y-%m-%d"))
-        # self.ticket_info_obj.info_ticket_section_bus_agency_var.set(self.buy_ticket_section_bus_agency_var.get())
-        # self.ticket_info_obj.info_ticket_section_bus_type_var.set(self.bus_type.get())
-        # self.ticket_info_obj.info_ticket_section_from_var.set(self.buy_ticket_section_from_var.get())
-        # self.ticket_info_obj.info_ticket_section_to_var.set(self.buy_ticket_section_to_var.get())
-        # self.ticket_info_obj.info_ticket_section_departure_date_var.set(self.buy_ticket_section_departure_date_var.get())
-        # self.ticket_info_obj.info_ticket_section_departure_time_var.set(self.buy_ticket_section_departure_time_var.get())
-        # self.ticket_info_obj.info_ticket_section_seats_no_var.set(selected_ones)
-        # self.ticket_info_obj.info_ticket_section_total_passenger_var.set(self.buy_ticket_section_total_passenger_var.get())
-        # self.ticket_info_obj.info_ticket_section_fare_var.set(self.buy_ticket_section_fare_var.get())
-        # self.ticket_info_obj.info_ticket_section_total_price_var.set(f"{self.total:.2f}")
-        # self.ticket_info_obj.info_ticket_section_reporting_time_var.set(self.buy_ticket_section_reporting_time_var.get())
-        
+    
 
 
     def search_for_cancel_btn_func(self):
@@ -807,18 +798,27 @@ class Ticket:
             connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
             cursor = connection.cursor()
             
-            query = "SELECT * FROM ticket_info_table where bus_no = %s AND mobile_no = %s ORDER BY ticket_id DESC LIMIT 1"
-            values = (self.bus_no, self.contact_entry.get())
-            cursor.execute(query, values)
-            row = cursor.fetchone()         
-
+            query1 = "SELECT * FROM passenger_details where username = %s and email = %s and password = %s"
+            values1 = ( self.buy_ticket_section_username_var.get(), self.buy_ticket_section_emial_var.get(), self.buy_ticket_section_password_var.get())
+            cursor.execute(query1, values1)
+            row = cursor.fetchone()   
             if row is not None:
-                # book button
-                self.cancel_button = ctk.CTkButton(self.footer_frame, text="CANCEL", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 17, "bold"), command=self.cancel_booking)
-                self.cancel_button.place(x=550, y=10)
 
+                query2 = "SELECT * FROM ticket_info_table where bus_no = %s AND mobile_no = %s ORDER BY ticket_id DESC LIMIT 1"
+                values2 = (self.bus_no, self.contact_entry.get())
+                cursor.execute(query2, values2)
+                row = cursor.fetchone()         
+                if row is not None:
+                    # book button
+                    self.cancel_button = ctk.CTkButton(self.footer_frame, text="CANCEL", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 17, "bold"), command=self.create_cancel_booking_confirmation_window)
+                    self.cancel_button.place(x=550, y=10)
+
+                else:
+                    messagebox.showerror("Error", "Booking is not done for cancelling", parent=self.ticket_button_frame)
+            
             else:
-                messagebox.showerror("Error", "Booking is not done for cancelling", parent=self.ticket_button_frame)
+                messagebox.showerror("Error", "Account is not created!!", parent=self.ticket_button_frame)
+
             connection.commit()
 
         except Error as e:
@@ -828,3 +828,8 @@ class Ticket:
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+
+
+    @staticmethod
+    def destroy_confirm_window():
+        confirm_transaction.destroy()
