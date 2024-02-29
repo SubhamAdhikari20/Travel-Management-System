@@ -6,6 +6,8 @@ from tkcalendar import DateEntry
 import mysql.connector
 import customtkinter as ctk
 from datetime import datetime
+from admin_ticket_info import Ticket_Info
+
 import json
 from mysql.connector import Error
 
@@ -32,18 +34,17 @@ class Ticket:
         self.buy_ticket_section_password_var = StringVar()
 
 
-
     ## Ticket Details
     def buy_ticket(self, parent_frame):
-        # Ticket button frame
+        # Ticket button frame #
         self.ticket_button_frame = Frame(parent_frame, bg="lightblue")
         self.ticket_button_frame.place(x=0, y=0, width=1253, height=551)
 
-        # Title Label
+        # Title Label #
         buy_ticket_label = Label(self.ticket_button_frame, text="Buy Ticket", font=("Arial", 20, "bold"), bg="black", fg="gold", bd=5, relief=RIDGE)
         buy_ticket_label.place(x=0, y=0, width=1253, height=50)
         
-        # # Logo
+        ## Logo
         top_left_logo = Image.open("System_Images/logo1.png")
         top_left_logo = top_left_logo.resize((50, 40), Image.LANCZOS) 
         self.top_left_logo = ImageTk.PhotoImage(top_left_logo)
@@ -63,8 +64,7 @@ class Ticket:
         passenger_name_label.place(x=5, y=10)
         self.passenger_name_entry = ttk.Entry(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_passenger_name_var)
         self.passenger_name_entry.place(x=150, y=10, width=200, height=30)
-
-
+        
         contact_label = Label(ticket_details_frame, text="Mobile Number:", bg="lightblue", font=("Arial", 12, "bold"))
         contact_label.place(x=5, y=50)
         self.contact_entry = ttk.Entry(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_passenger_contact_var)
@@ -92,9 +92,14 @@ class Ticket:
 
         from_label = Label(ticket_details_frame, text="From:", font=("Arial", 12, "bold"), bg="lightblue")
         from_label.place(x=5, y=250)
+        combo_box_from = ttk.Combobox(ticket_details_frame, font=("Arial", 12, "bold"), width=15, state="readonly", cursor="hand2", textvariable=self.buy_ticket_section_from_var)
+        combo_box_from["values"] = ["Select", "Kathmandu", "Pokhara", "Nepalgunj", "Surkhet"]
+        combo_box_from.current(0)
+        combo_box_from.place(x=150, y=250, width=200, height=30)
+       
         combo_box_frome_entry_label = Label(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_from_var, anchor=W, bg="white", borderwidth=1, relief=RIDGE)
         combo_box_frome_entry_label.place(x=150, y=250, width=200, height=30)
-
+        
         to_label = Label(ticket_details_frame, text="To:", font=("Arial", 12, "bold"), bg="lightblue")
         to_label.place(x=5, y=290)
         combo_box_to_entry_label = Label(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_to_var, anchor=W, bg="white", borderwidth=1, relief=RIDGE)
@@ -121,7 +126,7 @@ class Ticket:
         reporting_time_entry = Label(ticket_details_frame, font=("Arial", 12, "bold"), textvariable=self.buy_ticket_section_reporting_time_var, anchor=W, bg="white", borderwidth=1, relief=RIDGE)
         reporting_time_entry.place(x=150, y=410, width=200, height=30)
 
-        ## -------------------Bus Seats Booking-------------------
+        ## -------------------Bus Seats Booking----------------------
         bus_info_frame = Frame(self.ticket_button_frame, bg="#182356", bd=3, relief=RIDGE)
         bus_info_frame.place(x=390, y=70, width=350, height=75)
 
@@ -248,18 +253,19 @@ class Ticket:
         self.total_price = Label(self.footer_frame, text=f"NPR. {self.total}", fg="white", bg="gray12", font=("Arial", 12, "bold"))
         self.total_price.place(x=405, y=30)
         
+        # initializating object
+        self.obj = Ticket_Info()
 
         # book button
-        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"), command=self.create_booking_confirmation_window)
+        book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"), command=self.ticket_info_func)
         book_now_button.place(x=700, y=10)
 
+      
         # cancel button
         self.cancel_button = None
 
         # Ticket Info initiallization
-        # self.ticket_info_obj = Ticket_Info()
-
-
+        self.ticket_info_obj = Ticket_Info()
 
     ## Buy Tickets Functions
     def book_seat(self, row, col):
@@ -497,7 +503,7 @@ class Ticket:
             
             else:
                 messagebox.showerror("Invalid", "Username or Password", parent=self.confirm_transaction_window)
-        
+
         else:
             messagebox.showerror("Error", "Fields required!", parent=self.confirm_transaction_window)
 
@@ -787,21 +793,9 @@ class Ticket:
         self.ticket_info_obj.info_ticket_section_passenger_name_var.set(self.buy_ticket_section_passenger_name_var.get())
         self.ticket_info_obj.info_ticket_section_passenger_contact_var.set(self.buy_ticket_section_passenger_contact_var.get())
         self.ticket_info_obj.info_ticket_section_bus_no_var.set(self.bus_no)
-        # self.ticket_info_obj.info_ticket_section_booked_date_var.set(datetime.now().strftime("%Y-%m-%d"))
-        # self.ticket_info_obj.info_ticket_section_bus_agency_var.set(self.buy_ticket_section_bus_agency_var.get())
-        # self.ticket_info_obj.info_ticket_section_bus_type_var.set(self.bus_type.get())
-        # self.ticket_info_obj.info_ticket_section_from_var.set(self.buy_ticket_section_from_var.get())
-        # self.ticket_info_obj.info_ticket_section_to_var.set(self.buy_ticket_section_to_var.get())
-        # self.ticket_info_obj.info_ticket_section_departure_date_var.set(self.buy_ticket_section_departure_date_var.get())
-        # self.ticket_info_obj.info_ticket_section_departure_time_var.set(self.buy_ticket_section_departure_time_var.get())
-        # self.ticket_info_obj.info_ticket_section_seats_no_var.set(selected_ones)
-        # self.ticket_info_obj.info_ticket_section_total_passenger_var.set(self.buy_ticket_section_total_passenger_var.get())
-        # self.ticket_info_obj.info_ticket_section_fare_var.set(self.buy_ticket_section_fare_var.get())
-        # self.ticket_info_obj.info_ticket_section_total_price_var.set(f"{self.total:.2f}")
-        # self.ticket_info_obj.info_ticket_section_reporting_time_var.set(self.buy_ticket_section_reporting_time_var.get())
+  
         
-
-
+    
     def search_for_cancel_btn_func(self):
         try:
             connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
