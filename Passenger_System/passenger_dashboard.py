@@ -10,6 +10,7 @@ import customtkinter as ctk
 from datetime import datetime
 
 from passenger_buy_tickets import Ticket
+from passenger_account import Account
 
 myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
@@ -35,6 +36,28 @@ class Travel:
         self.dashboard_section_email_var = StringVar()
         self.dashboard_section_password_var = StringVar()
         self.dashboard_section_confirm_password_var = StringVar()
+
+
+        global dashboard_section_fname_var
+        dashboard_section_fname_var = self.dashboard_section_fname_var
+
+        global dashboard_section_lname_var
+        dashboard_section_lname_var = self.dashboard_section_lname_var
+
+        global dashboard_section_contact_var
+        dashboard_section_contact_var = self.dashboard_section_contact_var
+
+        global dashboard_section_username_var
+        dashboard_section_username_var = self.dashboard_section_username_var
+
+        global dashboard_section_email_var
+        dashboard_section_email_var = self.dashboard_section_email_var
+
+        global dashboard_section_password_var
+        dashboard_section_password_var = self.dashboard_section_password_var
+
+        global dashboard_section_confirm_password_var
+        dashboard_section_confirm_password_var = self.dashboard_section_confirm_password_var
         
         
         ### ------------------------------Title---------------------------------
@@ -99,13 +122,12 @@ class Travel:
         ## Intializing Obj
         self.ticket_obj = Ticket()
         self.account_obj = Account()
-        self.assign_var_account_section()
 
         # Menu Buttons
         dashboard_button = Button(menu_button_frame, text="Dashboard", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red", command=self.dashboard_combined_func)
         dashboard_button.place(x=0, y=1, width=190, height=50)
 
-        account_button = Button(menu_button_frame, text="Account", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red")
+        account_button = Button(menu_button_frame, text="Account", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red", command=self.assign_var_account_section)
         account_button.place(x=0, y=52, width=190, height=50)
 
         self.dashboard()
@@ -735,15 +757,35 @@ class Travel:
             self.ticket_obj.bus_type.set(row[7])
 
             # Passeger data
-            self.ticket_obj.buy_ticket_section_passenger_name_var.set(f"{self.dashboard_section_fname_var.get()} {self.dashboard_section_lname_var.get()}")
-            self.ticket_obj.buy_ticket_section_passenger_contact_var.set(self.dashboard_section_contact_var.get())
 
-            self.ticket_obj.buy_ticket_section_username_var.set(self.dashboard_section_username_var.get())
-            self.ticket_obj.buy_ticket_section_email_var.set(self.dashboard_section_email_var.get())
-            self.ticket_obj.buy_ticket_section_password_var.set(self.dashboard_section_password_var.get())
+            self.ticket_obj.buy_ticket_section_passenger_name_var.set(f"{dashboard_section_fname_var.get()} {dashboard_section_lname_var.get()}")
+            self.ticket_obj.buy_ticket_section_passenger_contact_var.set(dashboard_section_contact_var.get())
+
+            self.ticket_obj.buy_ticket_section_username_var.set(dashboard_section_username_var.get())
+            self.ticket_obj.buy_ticket_section_email_var.set(dashboard_section_email_var.get())
+            self.ticket_obj.buy_ticket_section_password_var.set(dashboard_section_password_var.get())
+
 
             # Button for opening buy_ticket_selection along with data transfer (after the data have been saved)
             self.buy_ticket_combined_func()
+
+
+    def assign_var_account_section(self):
+        # Copying data to account module 
+        self.account_obj.fname_var.set(dashboard_section_fname_var.get())
+        self.account_obj.lname_var.set(dashboard_section_lname_var.get())
+        self.account_obj.username_var.set(dashboard_section_username_var.get())
+        self.account_obj.contact_var.set(dashboard_section_contact_var.get())
+        self.account_obj.email_var.set(dashboard_section_email_var.get())
+        self.account_obj.password_var.set(dashboard_section_password_var.get())
+        self.account_obj.confirm_password_var.set(dashboard_section_confirm_password_var.get())
+
+        # Old email and password
+        self.account_obj.old_email_var.set(dashboard_section_email_var.get())
+        self.account_obj.old_username_var.set(dashboard_section_username_var.get())
+
+        # Button for opening account_selection along with data transfer (after the data have been saved)
+        self.account_combined_func()
 
 
     def clear_widgets_inside_scrollable_frame(self):
@@ -902,11 +944,27 @@ class Travel:
             self.account_obj.account(self.main_frame) 
             # self.assign_var_account_section()
 
+
+
+
+
     @staticmethod
     def main_window_destroy():
         open_main = messagebox.askyesno("Yes NO", "Will be logged out. Are you sure?", parent=primary)
         if open_main == 1:
             primary.destroy()
+
+
+    @staticmethod
+    def set_dashboard_section_var(v1, v2, v3, v4, v5, v6):
+        dashboard_section_fname_var.set(v1)
+        dashboard_section_lname_var.set(v2)
+        dashboard_section_username_var.set(v3)
+        dashboard_section_contact_var.set(v4)
+        dashboard_section_email_var.set(v5)
+        dashboard_section_password_var.set(v6)
+        dashboard_section_confirm_password_var.set(v6)
+
 
     
 

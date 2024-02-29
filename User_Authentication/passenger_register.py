@@ -3,12 +3,18 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter import messagebox
 import mysql.connector
-from passenger_login import Passenger_Login
+
+import ctypes
+myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 
 class register_type:
     def __init__(self,window):
         self.window_register_type = window
-        self.window_register_type.geometry("1536x785+0+0")
+        self.window_register_type.geometry("1465x740+0+0") 
+        self.window_register_type.title("Passenge Register")
+        self.window_register_type.iconbitmap("System_Images/title_logo.ico")
 
 
         #bg_image
@@ -70,7 +76,7 @@ class register_type:
         s_qn_label = Label(register_frame,text="Security Question",font=("amiri",12),bg="white")
         s_qn_label.place(x=450,y=270)
         self.security_qn_combo_box = ttk.Combobox(register_frame, font=("Amiri", 12), state="readonly",width=18,cursor="hand2")
-        self.security_qn_combo_box["values"] = ("Select", "Favorite movie","Favorite Food")
+        self.security_qn_combo_box["values"] = ("Select", "Select", "Birth Place", "Father's Name", "Citizenship No", "Favorite movie")
         self.security_qn_combo_box.current(0)
         self.security_qn_combo_box.place(x=450, y=300)
 
@@ -138,75 +144,74 @@ class register_type:
         lo_button = Button(register_frame,image=self.login_button_img,bd=0,bg="white",activebackground="white",cursor="hand2", command=self.return_login_page)
         lo_button.place(x=800,y=480)
 
-
+        self.fname = self.f_name_entry
+        self.lname = self.l_name_entry
+        self.email = self.E_mail_entry
+        self.contact = self.contact_entry
+        self.address = self.address_entry
+        self.security_qn = self.security_qn_combo_box
+        self.security_ans = self.s_answer_entry
+        self.username = self.u_name_entry
+        self.setpass = self.pass_entry
+        self.cpass = self.cpass_entry
 
 
     def db_connect(self):
-            self.fname = self.f_name_entry.get()
-            self.lname = self.l_name_entry.get()
-            self.email = self.E_mail_entry.get()
-            self.contact = self.contact_entry.get()
-            self.address = self.address_entry.get()
-            self.security_qn = self.security_qn_combo_box.get()
-            self.security_ans = self.s_answer_entry.get()
-            self.username = self.u_name_entry.get()
-            self.setpass = self.pass_entry.get()
-            self.cpass = self.cpass_entry.get()
+        if self.fname.get() == "" or self.lname.get() == "" or self.email.get() == "" or self.contact.get() == "" or self.address == "" or self.security_ans.get() == "" or self.username.get() == "" or self.setpass.get() == "" or self.cpass.get() == "" :
+            messagebox.showerror("Error","Fill all the details",parent = self.window_register_type)
+        elif self.setpass.get() != self.cpass.get():
+            messagebox.showerror("Error","Both password should match",parent = self.window_register_type)
+        elif self.terms_conditions.get() == 0:
+            messagebox.showerror("Error","Accept terms and conditions",parent = self.window_register_type)
+        else:
+            try:
+                connection = mysql.connector.connect(
+                    host = "localhost",
+                    username = "root",
+                    password = "Root@123",
+                    database = "travel_ms_db"
+                )
+                my_cursor = connection.cursor()
+                quary1 = "select * from passenger_details where email = %s or username = %s"
+                values1 = (self.email.get(), self.username.get())
+                my_cursor.execute(quary1,values1,)
+                row = my_cursor.fetchone()
+                if row is not None:
+                    messagebox.showerror("Error","You already have account",parent = self.window_register_type)
+                else:
+                    quary2 = "insert into passenger_details (fname, lname, username, contact, email, address, security_qn, security_ans, new_password) values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                    values2 = (self.fname.get(),self.lname.get(),self.username.get(),self.contact.get(),self.email.get(),self.address.get(),self.security_qn.get(),self.security_ans.get(),self.setpass.get())
+                    my_cursor.execute(quary2,values2)
+                        
+                    connection.commit()
+                    messagebox.showinfo("Success","Id created successfully",parent = self.window_register_type)
 
-           
+            except Exception as e:
+                messagebox.showerror("Error",f"an error occured: {str(e)}",parent = self.window_register_type)
 
-            if self.fname == "" or self.lname == "" or self.email == "" or self.contact == "" or self.address == "" or self.security_ans == "" or self.username == "" or self.setpass == "" or self.cpass == "" :
-                messagebox.showerror("Error","Fill all the details",parent = self.window_register_type)
-            elif self.setpass != self.cpass:
-                messagebox.showerror("Error","Both password not match",parent = self.window_register_type)
-            elif self.terms_conditions.get() == 0:
-                messagebox.showerror("Error","Accept terms and conditions",parent = self.window_register_type)
-            else:
-                try:
-                    connection = mysql.connector.connect(
-                        host = "localhost",
-                        username = "root",
-                        password = "#Nbchand07",
-                        database = "travel_ms_db"
-                    )
-                    my_cursor = connection.cursor()
-                    quary1 = "select * from passenger_details where email = %s or username = %s"
-                    values1 = (self.email,self.username)
-                    my_cursor.execute(quary1,values1,)
-                    row = my_cursor.fetchone()
-                    if row is not None:
-                        messagebox.showerror("Error","You already have account",parent = self.window_register_type)
-                    else:
-                        quary2 = "insert into passenger_details (fname, lname, username, contact, email, address, security_qn, security_ans, new_password) values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                        values2 = (self.fname,self.lname,self.username,self.contact,self.email,self.address,self.security_qn,self.security_ans,self.setpass)
-                        my_cursor.execute(quary2,values2) 
-                        connection.commit()
-                        messagebox.showinfo("Success","Id created successfully",parent = self.window_register_type)
+            finally:
+                if connection.is_connected():
+                    connection.close()
 
-                except Exception as e:
-                    messagebox.showerror("Error",f"an error occured: {str(e)}",parent = self.window_register_type)
-
-                finally:
-                    if connection.is_connected():
-                        connection.close()
 
     def return_login_page(self):
-        connection = mysql.connector.connect(host = "localhost", username = "root", password = "#Nbchand07", database = "travel_ms_db")
+        connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
 
         my_cursor = connection.cursor()
         query2 = "select * from passenger_details where email = %s or username = %s"
-        values2 = (self.email, self.username)
+        values2 = (self.email.get(), self.username.get())
         my_cursor.execute(query2, values2)
         row = my_cursor.fetchone()
         if row == None:
             messagebox.showerror("Error", "Needs registration before login", parent=self.window_register_type)
         else: 
-            new_window = Toplevel()
-            obj = Passenger_Login(new_window)
+            # new_window = Toplevel()
+            # from passenger_login import Passenger_Login
+            # obj = Passenger_Login(new_window)
             self.window_register_type.destroy()
 
 
-if __name__ == "__main___":       
+if __name__ == "__main__":       
     root = Tk()
     obj = register_type(root)
     root.mainloop()

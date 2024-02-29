@@ -10,6 +10,7 @@ from admin_ticket_info import Ticket_Info
 
 import json
 from mysql.connector import Error
+from admin_ticket_info import Ticket_Info
 
 class Ticket:
     def __init__(self):
@@ -267,6 +268,7 @@ class Ticket:
         # Ticket Info initiallization
         self.ticket_info_obj = Ticket_Info()
 
+
     ## Buy Tickets Functions
     def book_seat(self, row, col):
         # selected_count = sum(sum(row) for row in self.seats_reference)
@@ -491,11 +493,12 @@ class Ticket:
 
                 # Ticket Generation Data and Window
                 self.insert_ticket_info_data(seats_ls)
-                new_window = Toplevel(self.confirm_transaction_window)
+                new_window = Toplevel(self.ticket_button_frame)
                 self.ticket_info_obj.ticket_info_class(new_window)
 
                 self.create_cancel_button()
-            
+                global confirm_transaction
+                confirm_transaction = self.confirm_transaction_window
                     
                 # Reseting the selected seats and total price
                 self.get_selected_seats() 
@@ -595,6 +598,7 @@ class Ticket:
                                 cursor.execute(query6, values6)
                             
                                 messagebox.showinfo("Sucess", "Cancelled", parent=self.confirm_cancel_window)
+                                self.confirm_cancel_window.destroy()
 
                     
                         connection.commit()
@@ -801,19 +805,26 @@ class Ticket:
             connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
             cursor = connection.cursor()
             
-            query = "SELECT * FROM ticket_info_table where bus_no = %s AND mobile_no = %s ORDER BY ticket_id DESC LIMIT 1"
-            values = (self.bus_no, self.contact_entry.get())
-            cursor.execute(query, values)
-            row = cursor.fetchone()         
-
+            query1 = "SELECT * FROM admin_details where username = %s and email = %s and password = %s"
+            values1 = ( self.buy_ticket_section_username_var.get(), self.buy_ticket_section_emial_var.get(), self.buy_ticket_section_password_var.get())
+            cursor.execute(query1, values1)
+            row = cursor.fetchone()  
             if row is not None:
-                # book button
-                self.cancel_button = ctk.CTkButton(self.footer_frame, text="CANCEL", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 17, "bold"), command=self.cancel_booking)
-                self.cancel_button.place(x=550, y=10)
 
+                query2 = "SELECT * FROM ticket_info_table where bus_no = %s AND mobile_no = %s ORDER BY ticket_id DESC LIMIT 1"
+                values2 = (self.bus_no, self.contact_entry.get())
+                cursor.execute(query2, values2)
+                row = cursor.fetchone()         
+                if row is not None:
+                    # book button
+                    self.cancel_button = ctk.CTkButton(self.footer_frame, text="CANCEL", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 17, "bold"), command=self.create_cancel_booking_confirmation_window)
+                    self.cancel_button.place(x=550, y=10)
+
+                else:
+                    messagebox.showerror("Error", "Booking is not done for cancelling", parent=self.ticket_button_frame)
+            
             else:
-                messagebox.showerror("Error", "Booking is not done for cancelling", parent=self.ticket_button_frame)
-            connection.commit()
+                messagebox.showerror("Error", "Account is not created!!", parent=self.ticket_button_frame)
 
         except Error as e:
             messagebox.showerror("Error while connecting to MySQL", f"{str(e)}", parent=self.ticket_button_frame)
@@ -822,3 +833,8 @@ class Ticket:
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+
+
+    @staticmethod
+    def destroy_confirm_window():
+        confirm_transaction.destroy()
