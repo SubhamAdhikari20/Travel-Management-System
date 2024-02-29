@@ -24,6 +24,7 @@ class admin_code:
         global primary
         primary = self.admin_window
 
+
         self.frame=ctk.CTkFrame(self.admin_window,fg_color='#5B5858',width=400,height=300,bg_color='transparent')
         self.frame.place(x=550,y=200)
 
@@ -52,6 +53,7 @@ class admin_code:
         code=self.code_entry.get()
         if code=='':
             messagebox.showerror('ERROR',"enter code", parent=self.admin_window)
+            
         else:
             try:
                 connection=mysql.connect(
@@ -83,6 +85,7 @@ class admin_code:
     @staticmethod
     def main_window_destroy():
         primary.destroy()
+
 
         
 

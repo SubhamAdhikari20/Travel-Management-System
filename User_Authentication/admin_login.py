@@ -21,7 +21,6 @@ class Admin_login():
         
         bg = Image.open("User_Authentication/images/login_bg.jpg")
         resize_bg = bg.resize((1465,750))
-
         self.bg_image = ImageTk.PhotoImage(resize_bg)
         bg_label = Label(self.window_login_type,image=self.bg_image)
         bg_label.place(x=0,y=0)
@@ -34,22 +33,21 @@ class Admin_login():
         self.logo_image = ImageTk.PhotoImage(resize_logo)
         Label(login_frame,image=self.logo_image,bg="gray38").place(x=150,y=10,width=100,height=100)
         
+
         Label(login_frame,text="Admin Login",bg="gray38",fg="white",font=("Arial",20,"bold")).place(x=105,y=120)
-
         Label(login_frame,text="Username",bg="gray38",fg="white",font=("Arial",15,"bold")).place(x=95,y=185)
-
+        
         user_logo = Image.open("User_Authentication/images/username_logo.png")
         resize_user_logo = user_logo.resize((20,20))
         self.user_logo_image = ImageTk.PhotoImage(resize_user_logo)
         Label(login_frame,image=self.user_logo_image,bg="gray38").place(x=70,y=190)
-        
         
         self.admin_username = StringVar()
         self.username_entry = Entry(login_frame,textvariable=self.admin_username,width=25,font=("Arial",14,"bold"),fg='black',bg='white')
         self.username_entry.place(x=70,y=220, width=250, height=30)
 
         Label(login_frame,text="Password",bg="gray38",fg="white",font=("Arial",15,"bold")).place(x=95,y=260)
-        
+    
         p_logo = Image.open("User_Authentication/images/password_logo.png")
         resize_p_logo = p_logo.resize((20,20))
         self.p_logo_image = ImageTk.PhotoImage(resize_p_logo)
@@ -72,12 +70,9 @@ class Admin_login():
         self.open_btn=Button(login_frame,image=self.open_eye,bg='white',bd=0,height=22,cursor='hand2',command=show)
         self.open_btn.place(x=287,y=292)
 
-
-
         # login Button
         login_button = ctk.CTkButton(login_frame,text="Login",text_color='black',fg_color="white", font=("Arial",12,"bold"), command=self.login_btn_func)
-        login_button.place(x=120,y=340)
-
+  
         # creating and forgot Button
         self.new_acc_btn=ctk.CTkButton(login_frame,text="Create new account?",text_color="white",fg_color="gray38",font=("times new roman",15,"bold"),command=self.code).place(x=40,y=410)
 
@@ -88,7 +83,6 @@ class Admin_login():
         from admin_code import admin_code
         obj=admin_code(signin)
 
-
     def forgot(self):
         forgot=Toplevel(self.window_login_type)
         obj=admin_forgot_pas.admin_forgot(forgot)
@@ -98,6 +92,7 @@ class Admin_login():
         password = self.password_entry.get()
         if username==''or password=='':
             messagebox.showerror('ERROR','Enter all details', parent = self.window_login_type)
+          
         else:
             try:
                 connection=mysql.connect(

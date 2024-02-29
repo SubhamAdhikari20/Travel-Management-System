@@ -2,10 +2,10 @@ from tkinter import *
 import customtkinter as ctk
 from PIL import ImageTk, Image
 
-
 import ctypes
 myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
 
 class FirstPage:
     def __init__(self, first_window):
@@ -20,7 +20,7 @@ class FirstPage:
 
         # backgroung Image
         self.bg_img = Image.open('User_Authentication/images/1 copy.png')  # Update the path
-        self.bg_img_resize = self.bg_img.resize((1465, 740))
+        self.bg_img_resize = self.bg_img.resize((1465, 750))
         self.bg_con = ImageTk.PhotoImage(self.bg_img_resize)
         self.bg_label = Label(self.first_window, image=self.bg_con)
         self.bg_label.place(x=0, y=0)
@@ -116,19 +116,21 @@ class FirstPage:
         new=Toplevel(self.first_window)
         from admin_code import admin_code
         obj=admin_code(new)
-    
 
+    
     def passenger_login_func(self):
         new_window = Toplevel(self.first_window)
         from passenger_login import Passenger_Login 
         obj = Passenger_Login(new_window)
 
+        
     def passenger_register_func(self):
         new_window = Toplevel(self.first_window)
         from passenger_register import register_type
         obj = register_type(new_window)
 
 
+        
 if __name__ == "__main__":
     root = Tk()
     first_window_obj = FirstPage(root)

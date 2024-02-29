@@ -9,6 +9,7 @@ import ctypes
 myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
+
 class register_type:
     def __init__(self,window):
         self.window_register_type = window
@@ -16,12 +17,12 @@ class register_type:
         self.window_register_type.title('Admin resgister')
         self.window_register_type.minsize(1465, 740)
         self.window_register_type.iconbitmap("System_Images/title_logo.ico")
+        
         #bg_image
         bg2 = Image.open("User_Authentication/images/bg.jpg")
         resize_bg2 = bg2.resize((1465,750))
         self.bg2_image = ImageTk.PhotoImage(resize_bg2)
         Label(self.window_register_type,image=self.bg2_image).place(x=0,y=0) 
- 
 
         #register_frame
         self.register_frame = Frame(self.window_register_type,bd=5,bg="white")
@@ -35,6 +36,7 @@ class register_type:
 
         #heading
         ctk.CTkLabel(self.register_frame,text="Admin Register",bg_color="white",fg_color='white',text_color='black',font=("amiri",30,"bold")).place(x=450,y=10)
+
         #f_name
         ctk.CTkLabel(self.register_frame,text="First name",font=("amiri",20),bg_color="white",fg_color='white',text_color='black').place(x=450,y=60)
         self.f_name_entry = ctk.CTkEntry(self.register_frame,textvariable=StringVar(),width=200,font=("arisl",12),fg_color='white',text_color='black')
@@ -72,7 +74,6 @@ class register_type:
         self.security_qn_combo_box.current(0)
         self.security_qn_combo_box.place(x=450, y=300)
 
-
         # s_answer
         ctk.CTkLabel(self.register_frame,text="Security Answer",font=("amiri",20),bg_color="white",fg_color='white',text_color='black').place(x=850,y=270)
         self.s_answer_entry = ctk.CTkEntry(self.register_frame,textvariable=StringVar(),width=200,font=("arisl",12),bg_color="white",fg_color='white',text_color='black')
@@ -89,7 +90,6 @@ class register_type:
         ctk.CTkLabel(self.register_frame,text="Confirm password",font=("amiri",20),bg_color="white",fg_color='white',text_color='black').place(x=850,y=340)
         self.cpass_entry = ctk.CTkEntry(self.register_frame,textvariable=StringVar(),width=200,font=("arisl",12),bg_color="white",fg_color='white',text_color='black', show="*")
         self.cpass_entry.place(x=850,y=370)
-
 
         #check_button
         self.terms_conditions = IntVar()
@@ -110,9 +110,7 @@ class register_type:
         lo_button = Button(self.register_frame,image=self.login_button_img, bg="white",bd=0, activebackground="white",command=self.return_login_page, cursor="hand2")
         lo_button.place(x=800,y=480)
 
-
  # eye image
-
         def hide():
            self.open_eye.configure(file='User_Authentication/images/closeye.png')
            self.pass_entry.configure(show='*')
@@ -125,7 +123,7 @@ class register_type:
         self.open_eye=PhotoImage(file='User_Authentication/images/closeye.png')
         self.open_btn=Button(self.register_frame,image=self.open_eye,bg='white',bd=0,height=22,cursor='hand2',command=show)
         self.open_btn.place(x=620,y=371)
-       
+    
         def hide1():
            self.open_eye1.configure(file='User_Authentication/images/closeye.png')
            self.cpass_entry.configure(show='*')
@@ -139,8 +137,7 @@ class register_type:
         self.open_btn1=Button(self.register_frame,image=self.open_eye1,bg='white',bd=0,height=22,cursor='hand2',command=show1)
         self.open_btn1.place(x=1020,y=371)
 
-    
-
+      
     def db_connect(self):
             fname = self.f_name_entry.get()
             lname = self.l_name_entry.get()
@@ -194,7 +191,6 @@ class register_type:
                         connection.close()   
 
 
-
     def return_login_page(self):
         connection = mysql.connector.connect(host = "localhost", username = "root", password = "Root@123", database = "travel_ms_db")
                 
@@ -213,8 +209,8 @@ class register_type:
             # obj = Admin_login(new_window)
             # self.window_register_type.destroy()
 
-
-
+            
+            
 if __name__ == "__main__":    
     root = Tk()
     obj = register_type(root)

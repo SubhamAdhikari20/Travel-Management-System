@@ -122,7 +122,6 @@ class Travel:
         ## Intializing Obj
         self.ticket_obj = Ticket()
         self.account_obj = Account()
-        # self.assign_var_account_section()
 
         # Menu Buttons
         dashboard_button = Button(menu_button_frame, text="Dashboard", font=("Arial", 15, "bold"),bg="gray17", fg="gold", cursor="hand2", highlightthickness=5, activebackground="gray12", activeforeground="red", command=self.dashboard_combined_func)
@@ -137,12 +136,12 @@ class Travel:
 
 
 
-    ################################## Dashboard Section ###################################
+    ################################## Dashboard Section ####################################
 
     def dashboard(self):
         ## Bus Details
         # Title Label
-        ### ------------------------------Main Frame--------------------------------------
+        ### ------------------------------Main Frame---------------------------------------
         self.dashboard_frame = Frame(self.main_frame, bg="lightblue")      
         self.dashboard_frame.place(x=0, y=0, width=1253, height=551)                        
 
@@ -699,8 +698,6 @@ class Travel:
         ticket_button = ctk.CTkButton(each_info_frame, text="BUY TICKET", text_color="white", fg_color="#34cc15", cursor="hand2", font=("times new roman", 17, "bold"), width=125, height=50, hover_color="#59e23d", corner_radius=10, command=lambda row=row: self.assign_var_buy_tickets(row))
         ticket_button.place(x=670, y=87)
 
-
-
         # Binding hover events
         on_enter, on_leave = self.create_hover_functions(each_info_frame)
         each_info_frame.bind("<Enter>", on_enter)
@@ -760,12 +757,14 @@ class Travel:
             self.ticket_obj.bus_type.set(row[7])
 
             # Passeger data
+
             self.ticket_obj.buy_ticket_section_passenger_name_var.set(f"{dashboard_section_fname_var.get()} {dashboard_section_lname_var.get()}")
             self.ticket_obj.buy_ticket_section_passenger_contact_var.set(dashboard_section_contact_var.get())
 
             self.ticket_obj.buy_ticket_section_username_var.set(dashboard_section_username_var.get())
             self.ticket_obj.buy_ticket_section_email_var.set(dashboard_section_email_var.get())
             self.ticket_obj.buy_ticket_section_password_var.set(dashboard_section_password_var.get())
+
 
             # Button for opening buy_ticket_selection along with data transfer (after the data have been saved)
             self.buy_ticket_combined_func()
@@ -965,8 +964,6 @@ class Travel:
         dashboard_section_email_var.set(v5)
         dashboard_section_password_var.set(v6)
         dashboard_section_confirm_password_var.set(v6)
-
-
 
 
     

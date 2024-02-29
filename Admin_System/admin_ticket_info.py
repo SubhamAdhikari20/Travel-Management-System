@@ -55,6 +55,7 @@ class Ticket_Info:
         
         
         ### ------------------------------Title---------------------------------
+
         title_label = Label(self.main_window, text="Ticket" , font=("Arial", 30, "bold"), bd=5, relief=RIDGE, fg="gold",bg="gray12")
         title_label.place(x=0, y=0, width=800, height=50)
 
@@ -76,7 +77,6 @@ class Ticket_Info:
         buy_ticket_button.place(x=325, y=600, width=120, height=50)
 
         self.main_window.grab_set()
-  
 
 
     def welcome(self):
@@ -107,6 +107,7 @@ class Ticket_Info:
         if not text_content.strip():
             messagebox.showerror("Error", "No content to save!", parent=self.main_window)
             return
+
 
         file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")], parent=self.main_window)
         if file_path:
@@ -140,8 +141,6 @@ class Ticket_Info:
                 from admin_buy_tickets import Ticket
                 Ticket.destroy_confirm_window()
                 self.main_window.destroy()
-
-
 
     def fetch_ticket_info_data(self):
         try:

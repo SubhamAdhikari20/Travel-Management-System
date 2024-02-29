@@ -9,14 +9,14 @@ import ctypes
 myappid = 'mycompany.myproduct.subproduct.version'       # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
+
 class admin_forgot:
     def __init__(self,forgot_window):
         self.forgot_window   =forgot_window
         self.forgot_window.geometry('1465x740+0+0')
         self.forgot_window.title('Forgot Password') 
         self.forgot_window.iconbitmap("System_Images/title_logo.ico")
-   
-
+  
         self.bg_img=Image.open('User_Authentication/images/forget_password.jpg')
         self.bg_resize=self.bg_img.resize((1465,750))
         self.bg_con=ImageTk.PhotoImage(self.bg_resize)
@@ -77,7 +77,6 @@ class admin_forgot:
         self.con_entry=Entry(self.forgot_window,fg='black',bg='white',font=('Arial',14, "bold"), show="*")
         self.con_entry.place(x=600,y=590, width=222, height=30)
 
-
         def hide1():
            self.open_eye1.configure(file='User_Authentication/images/closeye.png')
            self.con_entry.configure(show='*')
@@ -90,8 +89,8 @@ class admin_forgot:
         self.open_eye1=PhotoImage(file='User_Authentication/images/closeye.png')
         self.open_btn1=Button(self.forgot_window,image=self.open_eye1,bg='white',bd=0,height=24,cursor='hand2',command=show1)
         self.open_btn1.place(x=790,y=591)
-        
 
+    
 
     # reset Button
         self.reset_btn=ctk.CTkButton(self.forgot_window,text='Reset',fg_color='white',text_color='black',font=('Arial',20, "bold"),width=70,command=self.reset)
@@ -150,11 +149,9 @@ class admin_forgot:
         my_cursor.execute(query2, values2)
         row = my_cursor.fetchone()
         if row == None:
-            messagebox.showerror("Error", "Needs registration before login", parent=self.root)
+            messagebox.showerror("Error", "Needs registration before login", parent=self.forgot_window)
         else: 
             self.root.destroy()
-
-
 
 
 

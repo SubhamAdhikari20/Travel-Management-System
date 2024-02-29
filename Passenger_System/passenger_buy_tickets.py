@@ -10,6 +10,8 @@ import json
 from mysql.connector import Error
 from passenger_ticket_info import Ticket_Info
 
+from passenger_ticket_info import Ticket_Info
+
 class Ticket:
     def __init__(self):
         ## Variables 
@@ -248,8 +250,11 @@ class Ticket:
         self.total = f"{0:.2f}"
         self.total_price = Label(self.footer_frame, text=f"NPR. {self.total}", fg="white", bg="gray12", font=("Arial", 12, "bold"))
         self.total_price.place(x=405, y=30)
-        
 
+        # initializating object
+        self.obj = Ticket_Info()        
+
+  
         # book button
         book_now_button = ctk.CTkButton(self.footer_frame, text="BOOK NOW", fg_color="#35c857",  cursor="hand2", width=125, height=50, hover_color="#368e4b", font=("times new roman", 15, "bold"), command=self.create_booking_confirmation_window)
         book_now_button.place(x=700, y=10)
@@ -790,7 +795,6 @@ class Ticket:
         self.ticket_info_obj.info_ticket_section_passenger_name_var.set(self.buy_ticket_section_passenger_name_var.get())
         self.ticket_info_obj.info_ticket_section_passenger_contact_var.set(self.buy_ticket_section_passenger_contact_var.get())
         self.ticket_info_obj.info_ticket_section_bus_no_var.set(self.bus_no)
-    
 
 
     def search_for_cancel_btn_func(self):

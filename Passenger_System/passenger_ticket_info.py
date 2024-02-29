@@ -14,6 +14,7 @@ from reportlab.lib.pagesizes import A4
 from mysql.connector import Error
 import json
 
+
 class Ticket_Info:
     def __init__(self):
         # ======================Variables======================
@@ -33,7 +34,6 @@ class Ticket_Info:
         self.info_ticket_section_total_price_var = StringVar()
         self.info_ticket_section_total_passenger_var = StringVar()
         self.info_ticket_section_reporting_time_var = StringVar()
-        
 
 
     def ticket_info_class(self, root):
@@ -41,7 +41,6 @@ class Ticket_Info:
         self.main_window.title("Travel Managemet System")
         self.main_window.geometry("800x740+330+0")
         self.main_window.iconbitmap("System_Images/title_logo.ico")
-        self.main_window.resizable(0, 0)
 
 
         #image
@@ -51,10 +50,9 @@ class Ticket_Info:
         label_top_left_img = Label(self.main_window, image=self.top_left_img, relief=RIDGE)
         label_top_left_img.place(x=0, y=0, width=200, height=140)
 
-        
-        
-        
+             
         ### ------------------------------Title---------------------------------
+
         title_label = Label(self.main_window, text="Ticket" , font=("Arial", 30, "bold"), bd=5, relief=RIDGE, fg="gold",bg="gray12")
         title_label.place(x=0, y=0, width=800, height=50)
 
@@ -75,10 +73,10 @@ class Ticket_Info:
         buy_ticket_button = Button(bill_frame, text="Print", font=("Arial", 15, "bold"), bg="green", fg="gold", cursor="hand2", bd=5, highlightthickness=5, activebackground="darkgreen", activeforeground="black", command=self.save_to_pdf)
         buy_ticket_button.place(x=325, y=600, width=120, height=50)
   
-
         self.main_window.grab_set()
 
-
+    
+    
     def welcome(self):
         self.textarea.delete(1.0,END)
         self.textarea.insert(END,"\n\t\t              Welcome to Yatru Travels\n")
@@ -186,7 +184,7 @@ class Ticket_Info:
                 connection.close()
 
 
-    
+
 def main(): 
     window = Tk()
     # travel_obj = Travel(window)
